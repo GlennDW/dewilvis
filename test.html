@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <head>
-    <title>TEST</title>
+    <title>TESTER</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
@@ -78,6 +78,27 @@
         color: inherit; /* Make the color the same as the surrounding text */
     }
 
+    /* Style for input fields */
+    .input-container {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    label {
+        font-size: 18px;
+        color: white;
+    }
+
+    input {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
     /*
         geel: #fef7ea
         roze: #f9c6cf
@@ -88,17 +109,21 @@
 </style>
 
     <header>
-        <h1>De WilVis</h1>
+        <h1>Tester</h1>
     </header>
 
     <main>
-        <h2>Welcome on the home page of De WilVis</h2>
-        <img src="HomeOfDeWilVis-highres.png" alt="Logo" class="logo">
+        <div class="input-container">
+            <label for="date">Select a Date:</label>
+            <input type="date" id="date" name="date">
+            
+            <label for="time">Select a Time:</label>
+            <input type="time" id="time" name="time">
+        </div>
     </main>
 
     <footer>
-        <p>by <a href="mailto:karen@dewilvis.be">Karen De Visch</a> + <a href="mailto:glenn@dewilvis.be">Glenn De Wilde</a></p>
-        <p><a href="https://dewilvis.be/test.html">test</a></p>
+        <p><a href="https://dewilvis.be/test.html">this is a tester page</a></p>
     </footer>
 
 </html>
