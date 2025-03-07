@@ -118,10 +118,10 @@
             <input type="text" id="text" name="text" placeholder="Type here...">
 
             <label for="date">Select a Date:</label>
-            <input type="date" id="birthdate" name="birthdate" inputmode="numeric" autocomplete="bday">
+            <input type="date" id="birthdate" name="birthdate" inputmode="numeric" autocomplete="bday" pattern="\d{2}-\d{2}-\d{4}">
 
             <label for="birthdate">Select Your Birthdate:</label>
-            <input type="text" id="birthdate" name="birthdate" inputmode="text" autocomplete="bday" placeholder="DD-MM-YYYY" pattern="\d{2}-\d{2}-\d{4}">
+            <input type="text" id="birthdate" name="birthdate" autocomplete="bday" placeholder="DD-MM-YYYY" pattern="\d{2}-\d{2}-\d{4}">
 
             <label for="birthdate">Select Your Birthdate:</label>
             <input type="text" id="birthdate" name="birthdate" inputmode="numeric" autocomplete="bday" placeholder="DD-MM-YYYY" pattern="\d{2}-\d{2}-\d{4}">
@@ -129,6 +129,14 @@
             <label for="time">Select a Time:</label>
             <input type="time" id="time" name="time">
         </div>
+
+        <form>
+            <label for="birthdate">Enter your Birthdate:</label>
+            <input type="text" id="birthdate" name="birthdate" autocomplete="bday" placeholder="dd/mm/yyyy" pattern="([0-2][0-9]|(3)[0-1])\/(0[1-9]|1[0-2])\/\d{4}" required>
+            <small>Format: dd/mm/yyyy</small>
+            <button type="submit">Submit</button>
+        </form>
+
     </main>
 
     <footer>
