@@ -99,6 +99,18 @@
         border-radius: 5px;
     }
 
+    .calendar-icon {
+        cursor: pointer;
+        margin-left: 10px;
+        font-size: 1.2em;
+        vertical-align: middle;
+    }
+    
+    .date-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
     /*
         geel: #fef7ea
         roze: #f9c6cf
@@ -126,7 +138,11 @@
 
             <!-- Birthdate with mask (custom input) -->
             <label for="birthdate-mask">Enter your Birthdate:</label>
-            <input type="text" id="birthdate-mask" name="birthdate-mask" inputmode="numeric" autocomplete="bday" placeholder="DD/MM/YYYY" pattern="([0-2][0-9]|(3)[0-1])\/(0[1-9]|1[0-2])\/\d{4}" maxlength="10" required>
+            <div class="date-wrapper">
+                <input type="text" id="birthdate-mask" name="birthdate-mask" inputmode="numeric" autocomplete="bday" placeholder="DD/MM/YYYY" pattern="([0-2][0-9]|(3)[0-1])\/(0[1-9]|1[0-2])\/\d{4}" maxlength="10" required>
+                <!-- Calendar Icon -->
+                <span id="calendar-icon" class="calendar-icon">&#128197;</span>
+            </div>
 
             <!-- Day, Month, Year Inputs (Separate fields) -->
             <div class="date-container">
@@ -162,6 +178,20 @@
 
         // Apply the mask on input field for birthdate-mask
         document.getElementById('birthdate-mask').addEventListener('input', applyDateMask);
+
+        // Function to open the native date picker and fill the date in the masked input
+        document.getElementById('calendar-icon').addEventListener('click', function() {
+            const input = document.getElementById('native-birthdate');
+            input.click(); // Open the native date picker
+
+            // Once a date is selected, fill the birthdate-mask field
+            input.addEventListener('change', function() {
+                const selectedDate = input.value;
+                const [year, month, day] = selectedDate.split('-'); // Split the date into year, month, day
+                document.getElementById('birthdate-mask').value = `${day}/${month}/${year}`; // Set formatted value
+            });
+        });
+        
     </script>
 
 </body>
