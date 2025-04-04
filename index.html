@@ -58,9 +58,11 @@
     }
 
     .logo {
-        width: -webkit-fill-available;
-        flex-grow: 1;
-        height: auto;
+        width: 100vw;  /* Full width of the viewport */
+        max-width: 550px;
+        height: 100vw; /* Maintains a 1:1 aspect ratio */
+        max-height: 550px;
+        object-fit: contain;
         margin-top: 20px; /* Optional spacing */
     }
 
