@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TESTER</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        header {
+            padding-left: 30px;
+            padding-right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #033152;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 50px;
+            color: white;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #033152;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 20px;
+            color: hwb(205 81% 3%);
+        }
+
+        main {
+            padding-left: 30px;
+            padding-right: 30px;
+            max-width: 550px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+        }
+
+        footer {
+            padding-bottom: 40px;
+            background-color: #ffffff;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-style: normal;
+            font-size: 15px;
+            color: #f9c6cf;
+            background-color: #033152;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Style for input fields */
+        .input-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            font-size: 18px;
+            color: white;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .calendar-icon {
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 1.2em;
+            vertical-align: middle;
+        }
+
+        .date-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        #native-birthdate {
+            visibility: hidden;
+            position: absolute;
+            opacity: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Tester</h1>
+    </header>
+
+    <main>
+        <div class="input-container">
+            <!-- Birthdate with mask (custom input) -->
+            <label for="birthdate-mask">Enter your Birthdate:</label>
+            <div class="date-wrapper">
+                <input type="text" id="birthdate-mask" name="birthdate-mask" inputmode="numeric" autocomplete="bday" placeholder="DD/MM/YYYY" pattern="([0-2][0-9]|(3)[0-1])\/(0[1-9]|1[0-2])\/\d{4}" maxlength="10" required>
+                <!-- Calendar Icon -->
+                <span id="calendar-icon" class="calendar-icon">&#128197;</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p><a href="https://dewilvis.be/test.html">this is a tester page v9</a></p>
+    </footer>
+
+    <script>
+        function applyDateMask(event) {
+            const input = event.target;
+            let value = input.value.replace(/\D/g, ''); // Remove non-digits
+
+            let day = '';
+            let month = '';
+            let year = '';
+
+            // Smart jump logic
+            if (value.length >= 1) {
+                let firstDigit = parseInt(value[0]);
+                if (firstDigit > 3 && value.length === 1) {
+                    value = '0' + firstDigit; // pad with 0
+                }
+            }
+
+            if (value.length >= 2) {
+                day = value.slice(0, 2);
+            }
+
+            if (value.length >= 3) {
+                let third = value[2];
+                if (parseInt(third) > 1 && value.length === 3) {
+                    value = value.slice(0, 2) + '0' + third + value.slice(3); // pad with 0
+                }
+            }
+
+            if (value.length >= 4) {
+                month = value.slice(2, 4);
+            }
+
+            if (value.length >= 5) {
+                year = value.slice(4, 8);
+            }
+
+            let maskedValue = day;
+            if (month) maskedValue += '/' + month;
+            if (year) maskedValue += '/' + year;
+
+            input.value = maskedValue;
+        }
+
+        document.getElementById('birthdate-mask').addEventListener('input', applyDateMask);
+    </script>
+
+</body>
+
+</html>
