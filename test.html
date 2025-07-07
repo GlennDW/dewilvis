@@ -13,7 +13,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
         }
 
@@ -106,6 +107,63 @@
             opacity: 0;
         }
 
+        /* style for calendar-app selection */
+
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        /* Trigger button */
+        .calendar-button {
+            background-color: #004080;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        /* Modal background */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 999;
+        }
+
+        /* Bottom sheet modal */
+        .calendar-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar-modal h3 {
+            margin-top: 0;
+        }
+
+        .calendar-option {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+            text-align: left;
+        }
     </style>
 </head>
 
@@ -124,7 +182,9 @@
             <!-- Birthdate with mask (custom input) -->
             <label for="birthdate-mask">Enter your Birthdate:</label>
             <div class="date-wrapper">
-                <input type="text" id="birthdate-mask" name="birthdate-mask" inputmode="numeric" autocomplete="bday" placeholder="DD/MM/YYYY" pattern="([0-2][0-9]|(3)[0-1])\/(0[1-9]|1[0-2])\/\d{4}" maxlength="10" required>
+                <input type="text" id="birthdate-mask" name="birthdate-mask" inputmode="numeric" autocomplete="bday"
+                    placeholder="DD/MM/YYYY" pattern="([0-2][0-9]|(3)[0-1])\/(0[1-9]|1[0-2])\/\d{4}" maxlength="10"
+                    required>
                 <!-- Calendar Icon -->
                 <span id="calendar-icon" class="calendar-icon">&#128197;</span>
             </div>
@@ -132,6 +192,27 @@
             <!-- Time Input -->
             <label for="time">Select a Time:</label>
             <input type="time" id="time" name="time">
+        </div>
+        <br />
+
+        <!-- Part for Calendar app selection -->
+        <br />
+        <h2>Appointment Confirmed</h2>
+        <p>Appointment with Dr. X<br>
+            July 10, 2025 – 09:00 to 09:30 UTC<br>
+            Location: Online via Helena
+        </p>
+
+        <button class="calendar-button" onclick="showCalendarModal()">Add to Calendar</button>
+
+        <div class="modal-backdrop" id="modalBackdrop" onclick="hideCalendarModal()">
+            <div class="calendar-modal" onclick="event.stopPropagation()">
+                <h3>Select your calendar</h3>
+                <button class="calendar-option" onclick="addToGoogleCalendar()">Google Calendar</button>
+                <button class="calendar-option" onclick="addToOutlook()">Outlook</button>
+                <button class="calendar-option" onclick="downloadICS()">Apple Calendar / .ics</button>
+                <button class="calendar-option" onclick="hideCalendarModal()">Cancel</button>
+            </div>
         </div>
     </main>
 
@@ -175,6 +256,59 @@
             });
         });
 
+
+        // script for calendar-app selection
+        function showCalendarModal() {
+            document.getElementById("modalBackdrop").style.display = "block";
+        }
+
+        function hideCalendarModal() {
+            document.getElementById("modalBackdrop").style.display = "none";
+        }
+
+        function addToGoogleCalendar() {
+            const url = "https://calendar.google.com/calendar/render?" +
+                "action=TEMPLATE" +
+                "&text=Appointment+with+Dr.+X" +
+                "&dates=20250710T090000Z/20250710T093000Z" +
+                "&details=Online+consultation+via+Helena" +
+                "&location=Online" +
+                "&sf=true&output=xml";
+            window.open(url, "_blank");
+        }
+
+        function addToOutlook() {
+            const url = "https://outlook.live.com/calendar/0/deeplink/compose?" +
+                "subject=Appointment+with+Dr.+X" +
+                "&body=Join+via+Helena" +
+                "&startdt=2025-07-10T09:00:00Z" +
+                "&enddt=2025-07-10T09:30:00Z" +
+                "&location=Online";
+            window.open(url, "_blank");
+        }
+
+        function downloadICS() {
+            const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:Appointment with Dr. X
+DESCRIPTION:Online consultation via Helena
+DTSTART:20250710T090000Z
+DTEND:20250710T093000Z
+LOCATION:Online
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent.trim()], { type: "text/calendar;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "appointment.ics";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
     </script>
 
 </body>
