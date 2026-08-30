@@ -223,12 +223,15 @@ body.menu-open { overflow: hidden; }
 .portfolio-filter { padding: .6rem .9rem; border: 1px solid var(--line); border-radius: 999px; background: transparent; cursor: pointer; font-size: .8rem; font-weight: 750; }
 .portfolio-filter[aria-pressed="true"] { background: var(--ink); color: var(--white); }
 .portfolio-grid { display: grid; gap: 1rem; }
-.project-card { min-width: 0; }
+.project-card { min-width: 0; display: block; color: inherit; }
 .project-image { aspect-ratio: 4 / 3; display: grid; place-items: center; border-radius: var(--radius-md); overflow: hidden; }
 .project-image img { width: 75%; height: 75%; object-fit: contain; transition: transform .45s cubic-bezier(.22,1,.36,1); }
 .project-card:hover .project-image img { transform: scale(1.04); }
 .project-pink .project-image { background: var(--coral); }
-.project-paper .project-image { background: var(--paper-warm); }
+.project-pink .project-image img { width: 88%; height: 88%; }
+.project-paper .project-image { background: var(--coral); }
+.project-lastec .project-image { background: var(--paper-warm); }
+.project-lastec .project-image img { width: 88%; height: auto; }
 .project-mint .project-image { background: var(--mint); }
 .project-navy .project-image { background: var(--ink); }
 .project-navy .project-image img { width: 100%; height: 100%; object-fit: cover; }
@@ -290,7 +293,7 @@ body.menu-open { overflow: hidden; }
   .nav-cta { padding: .65rem .8rem; }
   .nav-actions .nav-cta { display: none; }
   .hero { padding-top: 7.5rem; }
-  .menu-tools { top: 5.2rem; width: calc(100% - 1rem); }
+  .menu-tools { top: 5.2rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

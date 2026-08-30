@@ -117,7 +117,6 @@ if (menuList && filterRow && searchInput) {
   const renderMenu = () => {
     const normalizedQuery = query.trim().toLocaleLowerCase("nl");
     const groups = menuGroups
-      .filter((group) => activeFilter === "all" || group.id === activeFilter)
       .map((group) => ({ ...group, items: group.items.filter((item) => item.join(" ").toLocaleLowerCase("nl").includes(normalizedQuery)) }))
       .filter((group) => group.items.length);
 
@@ -141,9 +140,9 @@ if (menuList && filterRow && searchInput) {
     activeFilter = button.dataset.filter;
     renderFilters();
     renderMenu();
-    if (activeFilter !== "all") {
+    {
       requestAnimationFrame(() => {
-        const section = menuList.querySelector(".menu-group");
+        const section = menuList.querySelector(activeFilter === "all" ? ".menu-group" : `#menu-${CSS.escape(activeFilter)}`);
         if (!section) return;
         const heading = section.querySelector("h2") || section;
         const tools = document.querySelector(".menu-tools");
