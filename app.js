@@ -1,4 +1,4 @@
-import { sites, menuGroups } from "./site-registry.js";
+import { sites, menuGroups, navigationItems } from "./site-registry.js";
 
 const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
@@ -13,10 +13,90 @@ if (siteGrid) {
   siteGrid.innerHTML = sites.map((site) => `
     <article class="site-card site-card-${site.accent} reveal" id="${site.id}">
       <div class="site-card-top"><span>${site.number}</span><span class="status-pill">${escapeHtml(site.status)}</span></div>
+      <img class="site-card-icon" src="${site.icon}" width="5500" height="5500" alt="" loading="lazy">
       <div><p class="eyebrow">${escapeHtml(site.kicker)}</p><h3>${escapeHtml(site.name)}</h3><p>${escapeHtml(site.description)}</p></div>
       <span class="site-card-action">${site.requiresAuth ? "Klaar voor toegang" : "Binnenkort verkennen"} <span aria-hidden="true">↗</span></span>
     </article>
   `).join("");
+}
+
+const menuToggle = document.querySelector("[data-menu-toggle]");
+if (menuToggle) {
+  const overlay = document.createElement("div");
+  overlay.className = "menu-overlay";
+  overlay.dataset.menuOverlay = "";
+  overlay.hidden = true;
+  overlay.innerHTML = `
+    <div class="menu-overlay-panel" role="dialog" aria-modal="true" aria-labelledby="menu-overlay-title">
+      <div class="overlay-head shell">
+        <a class="brand overlay-brand" href="/index.html">
+          <img src="/ClearBG/DeWilVis-whale-blue.png" width="5500" height="5500" alt="">
+          <span>De WilVis</span>
+        </a>
+        <button class="menu-close" type="button" data-menu-close aria-label="Sluit menu">
+          <span></span><span></span>
+        </button>
+      </div>
+      <nav class="overlay-nav shell" aria-label="Alle plekken" id="menu-overlay-title">
+        <p class="eyebrow">Alle plekken</p>
+        <ol>
+          ${navigationItems.map((item, index) => `
+            <li>
+              <a href="${item.href}" data-overlay-link>
+                <span class="overlay-number">${String(index + 1).padStart(2, "0")}</span>
+                <span class="overlay-name">${escapeHtml(item.name)}</span>
+                <span class="overlay-label">${escapeHtml(item.label)}</span>
+                ${item.state !== "live" ? `<span class="overlay-state">${item.state === "private" ? "Besloten" : "Binnenkort"}</span>` : `<span class="overlay-arrow" aria-hidden="true">↗</span>`}
+              </a>
+            </li>
+          `).join("")}
+        </ol>
+      </nav>
+      <p class="overlay-foot shell">Home of De WilVis · Gent, België</p>
+    </div>
+  `;
+  document.body.append(overlay);
+
+  const closeButton = overlay.querySelector("[data-menu-close]");
+  let previouslyFocused = null;
+  let openedAt = 0;
+
+  const setMenu = (open) => {
+    menuToggle.setAttribute("aria-expanded", String(open));
+    overlay.hidden = !open;
+    document.body.classList.toggle("menu-open", open);
+    if (open) {
+      openedAt = Date.now();
+      previouslyFocused = document.activeElement;
+      requestAnimationFrame(() => {
+        overlay.classList.add("is-open");
+        closeButton.focus();
+      });
+    } else {
+      overlay.classList.remove("is-open");
+      previouslyFocused?.focus();
+    }
+  };
+
+  menuToggle.addEventListener("click", () => setMenu(true));
+  closeButton.addEventListener("click", () => {
+    if (Date.now() - openedAt > 450) setMenu(false);
+  });
+  overlay.querySelectorAll("[data-overlay-link]").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+  overlay.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenu(false);
+    if (event.key !== "Tab") return;
+    const focusable = [...overlay.querySelectorAll("a[href], button:not([disabled])")];
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
 }
 
 const menuList = document.querySelector("[data-menu-list]");

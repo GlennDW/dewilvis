@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#082f4a">
+  <meta name="description" content="Design portfolio van De WilVis — logo design, UI en UX.">
+  <title>Portfolio — De WilVis</title>
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="stylesheet" href="../styles.css">
+  <script type="module" src="../app.js"></script>
+  <script type="module" src="portfolio.js"></script>
+</head>
+<body class="portfolio-page" data-page="portfolio">
+  <a class="skip-link" href="#main">Ga naar de inhoud</a>
+  <header class="site-header">
+    <nav class="glass-nav shell" aria-label="Hoofdnavigatie">
+      <a class="brand" href="../index.html" aria-label="De WilVis — home"><img src="../ClearBG/DeWilVis-whale-blue.png" width="5500" height="5500" alt=""><span>De WilVis</span></a>
+      <div class="nav-actions">
+        <a class="nav-cta" href="../drinks.html">Drankjes <span aria-hidden="true">↗</span></a>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="portfolio-hero shell reveal">
+      <p class="eyebrow">Selected work · growing archive</p>
+      <h1>Identities &<br><em>digital experiences.</em></h1>
+      <div class="portfolio-intro"><p>Een plek voor logo’s, interfaces en ervaringen — van de eerste potloodlijn tot het laatste detail in een werkend product.</p><span>Logo design<br>UI design<br>UX design</span></div>
+    </section>
+
+    <section class="portfolio-work shell" aria-labelledby="work-title">
+      <div class="portfolio-toolbar reveal">
+        <h2 id="work-title">Werk</h2>
+        <div class="portfolio-filters" data-portfolio-filters aria-label="Filter projecten"></div>
+      </div>
+      <div class="portfolio-grid" data-portfolio-grid aria-live="polite"></div>
+    </section>
+
+    <section class="portfolio-process">
+      <div class="shell reveal">
+        <p class="eyebrow">Hoe ik werk</p>
+        <h2>Eerst begrijpen.<br>Dan pas tekenen.</h2>
+        <ol>
+          <li><span>01</span><strong>Discover</strong><p>Context, gebruikers en de echte vraag scherp krijgen.</p></li>
+          <li><span>02</span><strong>Define</strong><p>Een duidelijke richting en een gedeeld besliskader maken.</p></li>
+          <li><span>03</span><strong>Design</strong><p>Een herkenbare identiteit of intuïtieve ervaring uitwerken.</p></li>
+          <li><span>04</span><strong>Refine</strong><p>Testen, leren en details verzorgen tot alles klopt.</p></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <a class="brand" href="../index.html"><img src="../ClearBG/DeWilVis-whale-blue.png" width="5500" height="5500" alt=""><span>De WilVis</span></a>
+    <p>Logo · UI · UX</p>
+    <p>© <span data-year></span></p>
+  </footer>
+</body>
+</html>
