@@ -1,150 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<!doctype html>
+<html lang="nl">
 <head>
-    <title>DeWilVis Drankjes</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#082f4a">
+  <meta name="description" content="De mobiele drankkaart van De WilVis: alcoholvrij, fris, bier, wijn, spirits en cocktails.">
+  <title>Drankkaart — De WilVis</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
 </head>
-
-
-<style>
-    * {
-        margin: 0px;
-        padding: 0px;
-        box-sizing: border-box;
-    }
-
-    navigation {
-        padding-top: 20px;
-        padding-left: 40px;
-        padding-right: 40px;
-        padding-bottom: 30px;
-        width: 100vw; 
-        display: flex;
-        flex-direction: column;
-        align-items: left;
-        background-color: #033152;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 30px;
-        color: white;
-    }
-
-    header {
-        padding-left: 15px;
-        padding-right: 15px;
-        width: 100vw; 
-        max-width: 550px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #033152;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 30px;
-        color: white;
-    }
-
-    body {
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #033152;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 20px;
-        color: hwb(205 81% 3%);
-    }
-
-    main {
-        padding-top: 30px;
-        padding-left: 30px;
-        padding-right: 30px;
-        max-width: 550px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-    }
-
-    .logo {
-        width: 250px; /* Adjust size as needed */
-        height: auto;
-        margin-top: 20px; /* Optional spacing */
-    }
-
-    .headerimage {
-        width: 200px; /* Adjust size as needed */
-        height: auto;
-    }
-
-    .menufront {
-        padding: 12px;
-        width: 100vw;  
-        max-width: 550px;
-        height: 100vw; 
-        max-height: 550px;
-        object-fit: contain;
-    }
-
-    footer {
-        padding-bottom: 40px;
-        background-color: #ffffff;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-style: normal;
-        font-size: 15px;
-        color:  #f9c6cf /* hwb(205 81% 3%) */;
-        background-color: #033152;
-    }
-
-    a {
-        text-decoration: none; /* Remove underline */
-        color: inherit; /* Make the color the same as the surrounding text */
-    }
-
-    /*
-        geel: #fef7ea
-        roze: #f9c6cf
-        rood: #e14232
-        groen: #5ea190
-
-        Normal log) <img src="HomeOfDeWilVis-highres.png" alt="Logo" class="logo">
-    */
-
-    /*
-    <body>
-        <h1>Only for iPhone</h1>
-        <embed src="drinksmenu-front.pdf" type="application/pdf" width="100%" height="600px">
-        <embed src="drinksmenu-1.pdf" type="application/pdf" width="100%" height="600px">
-        <embed src="drinksmenu-2.pdf" type="application/pdf" width="100%" height="600px">
-    </body>
-    */
-
-</style>
-
-    <navigation>
-        <a style="color: #f9c6cf; font-size: 15px;" href="index.html" class="back-button">← Return to home</a>
-    </navigation>
-
-    <header>
-        <h1>Drankjes</h1>
-    </header>
-
-    <body>
-        <a href="drinksmenu.pdf" download>
-            <embed src="drinksmenu-front.jpg" width="100%" height="auto">
-        </a>
-        <embed src="drinksmenu-1.jpg" width="100%" height="auto">
-        <embed src="drinksmenu-2.jpg" width="100%" height="auto">
-    </body> 
-
-    <footer>
-        <p><a href="/">Return to home</a></p>
-    </footer>
-
+<body class="menu-page" data-page="drinks">
+  <a class="skip-link" href="#menu">Ga naar de drankkaart</a>
+  <header class="site-header" data-site-nav>
+    <nav class="glass-nav shell" aria-label="Hoofdnavigatie">
+      <a class="brand" href="index.html" aria-label="Terug naar De WilVis home">
+        <img src="favicon.png" width="40" height="40" alt="">
+        <span>De WilVis</span>
+      </a>
+      <a class="nav-cta" href="index.html"><span aria-hidden="true">←</span> Home</a>
+    </nav>
+  </header>
+  <main id="menu">
+    <section class="menu-hero shell">
+      <div class="reveal">
+        <p class="eyebrow">De drankkaart</p>
+        <h1>Waar heb je<br><em>goesting</em> in?</h1>
+        <p>Een compacte kaart voor grote en kleine dorst. Vraag gerust wat er vandaag koel staat.</p>
+      </div>
+      <img class="menu-doodle reveal" src="DeWilVis-drinks.png" width="5845" height="3419" alt="De WilVis wijst naar de drankjes" fetchpriority="high">
+    </section>
+    <section class="menu-tools shell" aria-label="Drankkaart doorzoeken en filteren">
+      <label class="search-field">
+        <span class="sr-only">Zoek een drankje</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
+        <input type="search" inputmode="search" autocomplete="off" placeholder="Zoek een drankje…" data-menu-search>
+      </label>
+      <div class="filter-row" data-menu-filters aria-label="Filter op type"></div>
+    </section>
+    <section class="menu-list shell" data-menu-list aria-live="polite" aria-busy="true"></section>
+    <section class="menu-note shell reveal" aria-labelledby="menu-note-title">
+      <p class="eyebrow">Goed om te weten</p>
+      <h2 id="menu-note-title">Ook zonder, altijd met smaak.</h2>
+      <p>Vraag naar alcoholvrije varianten. Heb je een allergie of wil je weten wat er precies in je glas zit? Spreek ons even aan.</p>
+      <a href="drinksmenu.pdf" class="text-link" download>Download de originele kaart <span aria-hidden="true">↓</span></a>
+    </section>
+  </main>
+  <footer class="site-footer shell">
+    <a class="brand" href="index.html"><img src="favicon.png" width="36" height="36" alt=""><span>De WilVis</span></a>
+    <p>Proost, op jouw manier.</p>
+    <p>© <span data-year></span> De WilVis</p>
+  </footer>
+  <a class="back-to-top" href="#menu" aria-label="Terug naar boven">↑</a>
+</body>
 </html>
-

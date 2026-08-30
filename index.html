@@ -1,113 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<!doctype html>
+<html lang="nl">
 <head>
-    <title>Home of De Wilvis</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#082f4a">
+  <meta name="description" content="Welkom bij De WilVis — een warme plek voor drankjes, recepten, experimenten en mensen die graag samen zijn.">
+  <title>De WilVis — Welkom thuis</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
 </head>
-
-
-<style>
-    * {
-        margin: 0px;
-        padding: 0px;
-        box-sizing: border-box;
-    }
-
-    html, body {
-        height: 100%;
-    }
-
-    header {
-        padding-left: 30px;
-        padding-right: 30px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #033152;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 50px;
-        color: white;
-    }
-
-    body {
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #033152;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-size: 20px;
-        color: hwb(205 81% 3%);
-    }
-
-    main {
-        padding-left: 30px;
-        padding-right: 30px;
-        max-width: 550px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-    }
-
-    .logo {
-        padding: 12px;
-        width: 100vw;  /* Full width of the viewport */
-        max-width: 550px;
-        height: 100vw; /* Maintains a 1:1 aspect ratio */
-        max-height: 550px;
-        object-fit: contain;
-        margin-top: 20px; /* Optional spacing */
-    }
-
-    footer {
-        padding-left: 30px;
-        padding-right: 30px;
-        background-color: #ffffff;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        font-style: normal;
-        font-size: 15px;
-        color:  #f9c6cf /* hwb(205 81% 3%) */;
-        background-color: #033152;
-    }
-
-    a {
-        text-decoration: none; /* Remove underline */
-        color: inherit; /* Make the color the same as the surrounding text */
-    }
-
-    /*
-        geel: #fef7ea
-        roze: #f9c6cf
-        rood: #e14232
-        groen: #5ea190
-
-        Normal log) <img src="HomeOfDeWilVis-highres.png" alt="Logo" class="logo">
-    */
-
-</style>
-
-    <header>
-        <h1>De WilVis</h1>
-    </header>
-
-    <main>
-        <h2>Welcome to the home of De WilVis</h2>
-        <a href="drinks.html">
-            <img src="DeWilVis-drinks.png" alt="menu" class="logo">
-        </a>
-    </main>
-
-    <footer>
-        <p>by <a href="mailto:karen@dewilvis.be">Karen De Visch</a> + <a href="mailto:glenn@dewilvis.be">Glenn De Wilde</a></p>
-    </footer>
-
+<body data-page="home">
+  <a class="skip-link" href="#main">Ga naar de inhoud</a>
+  <header class="site-header" data-site-nav>
+    <nav class="glass-nav shell" aria-label="Hoofdnavigatie">
+      <a class="brand" href="index.html" aria-label="De WilVis — home">
+        <img src="favicon.png" width="40" height="40" alt="" fetchpriority="high">
+        <span>De WilVis</span>
+      </a>
+      <div class="nav-links">
+        <a href="#verhalen">Verhaal</a>
+        <a href="#plekken">Plekken</a>
+      </div>
+      <a class="nav-cta" href="drinks.html">Drankjes <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Home of De WilVis</p>
+        <h1 id="hero-title">Kom binnen.<br><em>Blijf even.</em></h1>
+        <p class="hero-lede">Een digitaal huis voor alles wat we graag delen: een goed glas, een gerecht met een verhaal en ideeën die nog mogen groeien.</p>
+        <div class="button-row">
+          <a class="button button-primary" href="drinks.html">Bekijk de drankjes</a>
+          <a class="button button-quiet" href="#plekken">Ontdek het huis</a>
+        </div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="orb orb-coral"></div>
+        <div class="orb orb-mint"></div>
+        <div class="hero-glass">
+          <img src="HomeOfDeWilVis-highres.png" width="5500" height="5500" alt="">
+          <p>Est. ergens<br>tussen toen & nu</p>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#verhalen"><span>Scroll</span><i aria-hidden="true"></i></a>
+    </section>
+    <section class="statement" id="verhalen" aria-labelledby="statement-title">
+      <div class="shell statement-inner reveal">
+        <p class="eyebrow">Ons soort plek</p>
+        <h2 id="statement-title">Niet alles hoeft een bestemming te hebben. Soms is <em>samen</em> al genoeg.</h2>
+        <p>De WilVis verzamelt kleine rituelen: iets inschenken, iets proberen, iets doorgeven. Deze website groeit mee met de mensen erachter.</p>
+      </div>
+    </section>
+    <section class="feature shell" aria-labelledby="menu-feature-title">
+      <a class="menu-feature reveal" href="drinks.html">
+        <div class="menu-feature-copy">
+          <p class="eyebrow">Nu geopend</p>
+          <h2 id="menu-feature-title">Wat mag het zijn?</h2>
+          <p>Van alcoholvrije ontdekkingen tot een klassieker met een twist. Snel leesbaar aan tafel, gemaakt voor je telefoon.</p>
+          <span class="text-link">Open de drankkaart <span aria-hidden="true">→</span></span>
+        </div>
+        <div class="menu-feature-art">
+          <img src="clan-chocolat.png" width="2692" height="4044" alt="Handgetekende illustraties van glazen, flessen en cocktails" loading="lazy">
+        </div>
+      </a>
+    </section>
+    <section class="places shell" id="plekken" aria-labelledby="places-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow">Ruimte om te groeien</p>
+          <h2 id="places-title">Meer kamers.<br>Dezelfde thuis.</h2>
+        </div>
+        <p>Elke plek krijgt later een eigen ritme en kan onafhankelijk groeien. Voorlopig staat de deur alvast op een kier.</p>
+      </div>
+      <div class="site-grid" data-site-grid aria-live="polite"></div>
+    </section>
+    <section class="closing">
+      <div class="shell closing-inner reveal">
+        <img src="DeWilVis-contour.png" width="2160" height="1620" alt="" loading="lazy">
+        <p class="eyebrow">Tot snel</p>
+        <h2>Goeie dingen<br>beginnen klein.</h2>
+        <p>Fase 1 is nog maar het begin. Kijk gerust rond — en kom later nog eens terug.</p>
+        <a class="button button-light" href="mailto:hello@dewilvis.be">Zeg hallo</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer shell">
+    <a class="brand" href="index.html"><img src="favicon.png" width="36" height="36" alt=""><span>De WilVis</span></a>
+    <p>Gemaakt met goesting in België.</p>
+    <p>© <span data-year></span> De WilVis</p>
+  </footer>
+</body>
 </html>
-
