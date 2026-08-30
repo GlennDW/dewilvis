@@ -141,6 +141,18 @@ if (menuList && filterRow && searchInput) {
     activeFilter = button.dataset.filter;
     renderFilters();
     renderMenu();
+    if (activeFilter !== "all") {
+      requestAnimationFrame(() => {
+        const section = menuList.querySelector(".menu-group");
+        if (!section) return;
+        const heading = section.querySelector("h2") || section;
+        const tools = document.querySelector(".menu-tools");
+        const toolsOffset = tools?.getBoundingClientRect().height ?? 0;
+        const stickyTop = tools ? parseFloat(getComputedStyle(tools).top) || 0 : 0;
+        const targetTop = heading.getBoundingClientRect().top + window.scrollY - stickyTop - toolsOffset - 16;
+        window.scrollTo({ top: Math.max(0, targetTop), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      });
+    }
   });
   searchInput.addEventListener("input", () => {
     query = searchInput.value;
