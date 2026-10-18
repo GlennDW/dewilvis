@@ -15,7 +15,9 @@ if (siteGrid) {
       <div class="site-card-top"><span>${site.number}</span><span class="status-pill">${escapeHtml(site.status)}</span></div>
       <img class="site-card-icon" src="${site.icon}" width="5500" height="5500" alt="" loading="lazy">
       <div><p class="eyebrow">${escapeHtml(site.kicker)}</p><h3>${escapeHtml(site.name)}</h3><p>${escapeHtml(site.description)}</p></div>
-      <span class="site-card-action">${site.requiresAuth ? "Klaar voor toegang" : "Binnenkort verkennen"} <span aria-hidden="true">↗</span></span>
+      ${site.state === "live"
+        ? `<a class="site-card-action" href="${escapeHtml(site.href)}">Open de recepten <span aria-hidden="true">↗</span></a>`
+        : `<span class="site-card-action">${site.requiresAuth ? "Klaar voor toegang" : "Binnenkort verkennen"} <span aria-hidden="true">↗</span></span>`}
     </article>
   `).join("");
 }

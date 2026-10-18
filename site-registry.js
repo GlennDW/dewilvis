@@ -1,6 +1,6 @@
 /** Shared registry for independently deployable De WilVis subsites. */
 export const sites = [
-  { id: "recipes", number: "01", name: "Recipes", kicker: "Uit de keuken", description: "Recepten die mogen vlekken, veranderen en doorgegeven worden.", href: "/index.html#recipes", status: "Binnenkort", accent: "coral", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
+  { id: "recipes", number: "01", name: "Recipes", kicker: "Uit de keuken", description: "Recepten die mogen vlekken, veranderen en doorgegeven worden.", href: "https://recipes.dewilvis.be", status: "Nu geopend", state: "live", accent: "coral", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
   { id: "lab", number: "02", name: "Lab", kicker: "Proberen mag", description: "Experimenten, prototypes en ideeën die nog geen vaste vorm nodig hebben.", href: "/index.html#lab", status: "In opbouw", accent: "mint", requiresAuth: false, icon: "/ClearBG/DeWilVis-blue.png" },
   { id: "private", number: "03", name: "Private", kicker: "Voor de clan", description: "Een besloten plek voor foto’s, plannen en dingen die onder ons blijven.", href: "/index.html#private", status: "Later", accent: "butter", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
 ];
@@ -10,7 +10,7 @@ export const navigationItems = [
   { name: "Drankjes", label: "Zoek in de mobiele drankkaart", href: "/drinks.html", state: "live" },
   { name: "DeVisKar", label: "Karen — research & consultancy", href: "/DeVisKar/", state: "live" },
   { name: "Portfolio", label: "Logo, UI & UX design", href: "/portfolio/", state: "live" },
-  { name: "Recipes", label: "Recepten voor later", href: "/index.html#recipes", state: "soon" },
+  { name: "Recipes", label: "Ontdek onze recepten", href: "https://recipes.dewilvis.be", state: "live" },
   { name: "Lab", label: "Digitale experimenten", href: "/index.html#lab", state: "soon" },
   { name: "Private", label: "Voor de clan", href: "/index.html#private", state: "private" },
 ];
