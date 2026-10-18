@@ -15,7 +15,7 @@ if (siteGrid) {
       <div class="site-card-top"><span>${site.number}</span><span class="status-pill">${escapeHtml(site.status)}</span></div>
       <img class="site-card-icon" src="${site.icon}" width="5500" height="5500" alt="" loading="lazy">
       <div><p class="eyebrow">${escapeHtml(site.kicker)}</p><h3>${escapeHtml(site.name)}</h3><p>${escapeHtml(site.description)}</p></div>
-      ${site.id === "instagram" ? `<a class="site-card-action" href="${site.href}">Open het dashboard <span aria-hidden="true">↗</span></a>` : `<span class="site-card-action">${site.requiresAuth ? "Klaar voor toegang" : "Binnenkort verkennen"} <span aria-hidden="true">↗</span></span>`}
+      ${site.state === "live" ? `<a class="site-card-action" href="${escapeHtml(site.href)}">Open de recepten <span aria-hidden="true">↗</span></a>` : site.id === "instagram" ? `<a class="site-card-action" href="${site.href}">Open het dashboard <span aria-hidden="true">↗</span></a>` : `<span class="site-card-action">${site.requiresAuth ? "Klaar voor toegang" : "Binnenkort verkennen"} <span aria-hidden="true">↗</span></span>`}
     </article>
   `).join("");
 }
@@ -30,7 +30,7 @@ if (menuToggle) {
     <div class="menu-overlay-panel" role="dialog" aria-modal="true" aria-labelledby="menu-overlay-title">
       <div class="overlay-head shell">
         <a class="brand overlay-brand" href="/index.html">
-          <img src="/ClearBG/DeWilVis-whale-blue.png" width="5500" height="5500" alt="">
+          <img src="${new URL("./ClearBG/DeWilVis-whale-blue.png", import.meta.url).href}" width="5500" height="5500" alt="">
           <span>De WilVis</span>
         </a>
         <button class="menu-close" type="button" data-menu-close aria-label="Sluit menu">
