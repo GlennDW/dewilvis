@@ -32,7 +32,7 @@ if (menuToggle) {
     <div class="menu-overlay-panel" role="dialog" aria-modal="true" aria-labelledby="menu-overlay-title">
       <div class="overlay-head shell">
         <a class="brand overlay-brand" href="/index.html">
-          <img src="/ClearBG/DeWilVis-whale-blue.png" width="5500" height="5500" alt="">
+          <img src="${new URL("./ClearBG/DeWilVis-whale-blue.png", import.meta.url).href}" width="5500" height="5500" alt="">
           <span>De WilVis</span>
         </a>
         <button class="menu-close" type="button" data-menu-close aria-label="Sluit menu">
