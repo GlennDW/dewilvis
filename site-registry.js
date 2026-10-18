@@ -3,7 +3,7 @@ export const sites = [
   { id: "recipes", number: "01", name: "Recipes", kicker: "Uit de keuken", description: "Recepten die mogen vlekken, veranderen en doorgegeven worden.", href: "https://recipes.dewilvis.be", status: "Nu geopend", state: "live", accent: "coral", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
   { id: "lab", number: "02", name: "Lab", kicker: "Proberen mag", description: "Experimenten, prototypes en ideeën die nog geen vaste vorm nodig hebben.", href: "/index.html#lab", status: "In opbouw", accent: "mint", requiresAuth: false, icon: "/ClearBG/DeWilVis-blue.png" },
   { id: "private", number: "03", name: "Private", kicker: "Voor de clan", description: "Een besloten plek voor foto’s, plannen en dingen die onder ons blijven.", href: "/index.html#private", status: "Later", accent: "butter", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
-  { id: "instagram", number: "04", name: "Instagram Saver", kicker: "Ideeën die blijven", description: "Volg je bewaarde Reels van Telegram tot in je Second Brain, via je eigen private verbinding.", href: "/instagram/", status: "Privé verbonden", accent: "mint", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
+  { id: "instagram", number: "04", name: "Instagram Saver", kicker: "Ideeën die blijven", description: "Je bewaarde Reels, samenvattingen en verslagen. Eén bibliotheek, met dezelfde login als Recipes.", href: "https://saver.dewilvis.be", status: "Nu geopend", state: "live", accent: "mint", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
 ];
 
 export const navigationItems = [
@@ -14,7 +14,7 @@ export const navigationItems = [
   { name: "Recipes", label: "Ontdek onze recepten", href: "https://recipes.dewilvis.be", state: "live" },
   { name: "Lab", label: "Digitale experimenten", href: "/index.html#lab", state: "soon" },
   { name: "Private", label: "Voor de clan", href: "/index.html#private", state: "private" },
-  { name: "Instagram Saver", label: "Van Reel naar Second Brain", href: "/instagram/", state: "private" },
+  { name: "Instagram Saver", label: "Je bewaarde Reels en verslagen", href: "https://saver.dewilvis.be", state: "private" },
 ];
 
 export const menuGroups = [
