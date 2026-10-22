@@ -1,6 +1,6 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 
 const origin = 'https://drinks.dewilvis.be';
@@ -29,8 +29,10 @@ before(async () => {
     },
   }));
   db = await runtime.getD1Database('DB');
-  const migration = await readFile(new URL('../migrations/0001_menu.sql', import.meta.url), 'utf8');
-  await db.batch(migration.split('\n').filter(line => line.trim() && !line.startsWith('--')).map(line => db.prepare(line)));
+  for (const file of (await readdir(new URL('../migrations/', import.meta.url))).filter(file => file.endsWith('.sql')).sort()) {
+    const migration = await readFile(new URL('../migrations/' + file, import.meta.url), 'utf8');
+    await db.batch(migration.split('\n').filter(line => line.trim() && !line.startsWith('--')).map(line => db.prepare(line)));
+  }
 });
 after(async () => { await runtime?.dispose(); });
 function request(path, {method='GET', data, cookie='dw_session=test', token=csrf, from=origin, headers={}} = {}) {
@@ -46,6 +48,41 @@ test('public menu contains the original menu and no management metadata', async 
   assert.ok(data.groups.flatMap(g => g.items).some(([name]) => name === 'Cola Zero'));
   assert.ok(!JSON.stringify(data).includes('edited_by'));
   assert.ok(!JSON.stringify(data).includes('version'));
+});
+test('legacy stars migrate to flags while the public names keep their markers', async () => {
+  const managed = await (await request('/api/drinks')).json();
+  const marked = managed.drinks.filter(d => d.alcoholFreeVariant);
+  assert.deepEqual(marked.map(d => d.name), ['Dark & Stormy', 'Cuba Libre', 'Gin & Tonic']);
+  assert.ok(managed.drinks.every(d => !d.name.endsWith('*')));
+  assert.ok(managed.drinks.filter(d => !marked.includes(d)).every(d => d.alcoholFreeVariant === false));
+  const menu = await (await request('/api/menu', {cookie:''})).json();
+  const cocktails = menu.groups.find(g => g.id === 'cocktails');
+  assert.equal(cocktails.footnote, '* Ook alcoholvrij verkrijgbaar.');
+  for (const d of marked) assert.ok(cocktails.items.some(([name]) => name === d.name + '*'));
+});
+test('variant flag controls markers and legends across availability and categories', async () => {
+  const created = await request('/api/drinks', {method:'POST', data:{...sample, alcoholFreeVariant:true}});
+  assert.equal(created.status, 201);
+  const {id} = await created.json();
+  const group = async category => (await (await request('/api/menu', {cookie:''})).json()).groups.find(g => g.id === category);
+  const current = async () => (await (await request('/api/drinks')).json()).drinks.find(d => d.id === id);
+  const update = async changes => {
+    assert.equal((await request(`/api/drinks/${id}`, {method:'PUT', data:{...await current(), ...changes}})).status, 200);
+  };
+  assert.equal((await current()).alcoholFreeVariant, true);
+  assert.ok((await group('soft')).items.some(([name]) => name === sample.name + '*'));
+  assert.equal((await group('soft')).footnote, '* Ook alcoholvrij verkrijgbaar.');
+  await update({available:false});
+  assert.equal((await group('soft')).footnote, '');
+  await update({available:true});
+  assert.equal((await group('soft')).footnote, '* Ook alcoholvrij verkrijgbaar.');
+  await update({category:'zero'});
+  assert.equal((await group('soft')).footnote, '');
+  assert.equal((await group('zero')).footnote, '* Ook alcoholvrij verkrijgbaar.');
+  await update({alcoholFreeVariant:false});
+  assert.equal((await group('zero')).footnote, '');
+  assert.ok((await group('zero')).items.some(([name]) => name === sample.name));
+  await update({available:false});
 });
 test('canonical HTML routes stay public after Workers Assets redirects', async () => {
   for (const path of ['/drinks', '/drinks.html', '/private', '/private.html']) {
@@ -143,14 +180,14 @@ test('add, edit, hide, restore and stale-write protection use real D1', async ()
   assert.ok(!menu.groups.some(g => g.items.some(([name]) => name === 'Changed Spritz' || name === sample.name)));
   const managed = await (await request('/api/drinks')).json();
   const item = managed.drinks.find(d => d.id === id);
-  assert.equal(item.available,false); assert.equal(item.version,2); assert.equal(item.name,'Changed Spritz');
+  assert.equal(item.alcoholFreeVariant,false); assert.equal(item.available,false); assert.equal(item.version,2); assert.equal(item.name,'Changed Spritz');
   assert.equal((await request(`/api/drinks/${id}`,{method:'PUT',data:update})).status,409);
   assert.equal((await request(`/api/drinks/${id}`,{method:'PUT',data:{...item,available:true}})).status,200);
   menu = await (await request('/api/menu',{cookie:''})).json();
   assert.ok(menu.groups.some(g => g.items.some(([name]) => name === 'Changed Spritz')));
 });
 test('invalid input and oversized bodies never modify menu', async () => {
-  for (const data of [{...sample,name:''},{...sample,category:'unknown'},{...sample,available:'yes'},[], '{bad json']) {
+  for (const data of [{...sample,name:''},{...sample,category:'unknown'},{...sample,available:'yes'},{...sample,alcoholFreeVariant:'yes'},{...sample,alcoholFreeVariant:null},[], '{bad json']) {
     assert.equal((await request('/api/drinks',{method:'POST',data})).status,400);
   }
   assert.equal((await request('/api/drinks',{method:'POST',data:{...sample,details:'x'.repeat(13000)}})).status,413);

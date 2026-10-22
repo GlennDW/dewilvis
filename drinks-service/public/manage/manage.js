@@ -42,6 +42,7 @@ function edit(item) {
   $('drink-details').value = item?.details || '';
   $('drink-category').value = item?.category || groups[0]?.id || '';
   $('drink-available').checked = item?.available ?? true;
+  $('drink-alcohol-free-variant').checked = item?.alcoholFreeVariant ?? false;
   $('form-message').textContent = '';
   $('drink-dialog').showModal(); $('drink-name').focus();
 }
@@ -89,7 +90,7 @@ $('drink-form').addEventListener('submit', async event => {
   $('form-message').textContent = '';
   let saved = false;
   try {
-    const input = { name:$('drink-name').value, details:$('drink-details').value, category:$('drink-category').value, available:$('drink-available').checked, ...(editing ? { version:editing.version } : {}) };
+    const input = { name:$('drink-name').value, details:$('drink-details').value, category:$('drink-category').value, available:$('drink-available').checked, alcoholFreeVariant:$('drink-alcohol-free-variant').checked, ...(editing ? { version:editing.version } : {}) };
     await api(editing ? `/api/drinks/${editing.id}` : '/api/drinks', editing ? 'PUT' : 'POST', input);
     saved = true; $('drink-dialog').close(); await load(); message('Opgeslagen. De publieke kaart is bijgewerkt.');
   } catch (error) {

@@ -48,7 +48,7 @@ async function auth(request, env, path, method = 'GET', data) {
     method, headers, ...(data === undefined ? {} : { body: JSON.stringify(data) }),
   }));
 }
-const drink = (row) => ({ id: row.id, name: row.name, details: row.details, category: row.category, available: Boolean(row.available), position: row.position, version: row.version });
+const drink = (row) => ({ id: row.id, name: row.name, details: row.details, category: row.category, available: Boolean(row.available), alcoholFreeVariant: Boolean(row.alcohol_free_variant), position: row.position, version: row.version });
 async function route(request, env) {
   const url = new URL(request.url), path = url.pathname, method = request.method;
   // Only the shared login endpoints accept credentialed requests from the main website.
@@ -70,9 +70,13 @@ async function route(request, env) {
   if (path === '/api/menu' && method === 'GET') {
     const [groups, items] = await env.DB.batch([
       env.DB.prepare('SELECT id,label,title,intro,footnote FROM categories ORDER BY position,id'),
-      env.DB.prepare('SELECT category,name,details FROM drinks WHERE available=1 ORDER BY position,name,id'),
+      env.DB.prepare('SELECT category,name,details,alcohol_free_variant FROM drinks WHERE available=1 ORDER BY position,name,id'),
     ]);
-    return json({ groups: groups.results.map(group => ({ ...group, items: items.results.filter(item => item.category === group.id).map(item => [item.name, item.details]) })).filter(group => group.items.length) });
+    return json({ groups: groups.results.map(group => {
+      const available = items.results.filter(item => item.category === group.id);
+      const legend = available.some(item => item.alcohol_free_variant) ? '* Ook alcoholvrij verkrijgbaar.' : '';
+      return { ...group, footnote: [group.footnote, legend].filter(Boolean).join(' '), items: available.map(item => [item.name + (item.alcohol_free_variant ? '*' : ''), item.details]) };
+    }).filter(group => group.items.length) });
   }
   if (!path.startsWith('/api/')) fail('Niet gevonden.', 404);
   if (['POST', 'PUT'].includes(method) && (url.origin !== env.APP_ORIGIN || (authPaths.has(path) ? !authOriginAllowed(request.headers.get('Origin'), env) : request.headers.get('Origin') !== env.APP_ORIGIN))) fail('Ongeldige herkomst.', 403);
@@ -101,15 +105,17 @@ async function route(request, env) {
     const input = await body(request);
     const name = text(input.name, 120, true), details = text(input.details, 600), category = text(input.category, 40, true);
     if (typeof input.available !== 'boolean') fail('Kies of het drankje beschikbaar is.');
+    const alcoholFreeVariant = input.alcoholFreeVariant === undefined ? false : input.alcoholFreeVariant;
+    if (typeof alcoholFreeVariant !== 'boolean') fail('Kies of er een alcoholvrije variant is.');
     if (!await env.DB.prepare('SELECT id FROM categories WHERE id=?').bind(category).first()) fail('Onbekende categorie.');
     const now = Math.floor(Date.now() / 1000);
     if (method === 'POST') {
       const id = crypto.randomUUID();
-      await env.DB.prepare('INSERT INTO drinks(id,name,details,category,available,position,edited_by,edited_at) VALUES(?,?,?,?,?,(SELECT COALESCE(MAX(position),0)+1 FROM drinks),?,?)').bind(id, name, details, category, Number(input.available), session.user, now).run();
+      await env.DB.prepare('INSERT INTO drinks(id,name,details,category,available,alcohol_free_variant,position,edited_by,edited_at) VALUES(?,?,?,?,?,?,(SELECT COALESCE(MAX(position),0)+1 FROM drinks),?,?)').bind(id, name, details, category, Number(input.available), Number(alcoholFreeVariant), session.user, now).run();
       response = json({ id }, 201);
     } else {
       if (!Number.isSafeInteger(input.version) || input.version < 1) fail('Ongeldige versie.');
-      const result = await env.DB.prepare('UPDATE drinks SET name=?,details=?,category=?,available=?,version=version+1,edited_by=?,edited_at=? WHERE id=? AND version=?').bind(name, details, category, Number(input.available), session.user, now, path.split('/').at(-1), input.version).run();
+      const result = await env.DB.prepare('UPDATE drinks SET name=?,details=?,category=?,available=?,alcohol_free_variant=?,version=version+1,edited_by=?,edited_at=? WHERE id=? AND version=?').bind(name, details, category, Number(input.available), Number(alcoholFreeVariant), session.user, now, path.split('/').at(-1), input.version).run();
       if (!result.meta.changes) fail('Dit drankje is intussen gewijzigd. Annuleer en laad de kaart opnieuw voordat je deze wijziging herneemt.', 409);
       response = json({ ok: true });
     }

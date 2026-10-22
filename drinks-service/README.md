@@ -14,6 +14,8 @@ An independently deployable Cloudflare Worker for the public drinks menu and its
 - The initial migration imports the existing 53 drinks once. Later releases must never reimport or reset that list. Unavailable drinks remain editable and can be restored.
 - Static assets are copied from a strict allowlist. Worker source, tests, database files and configuration are never included in the public asset bundle.
 
+The drink editor includes an “Alcoholvrije variant verkrijgbaar” switch, off by default for new drinks. The public API adds a star to flagged drinks and the existing pink legend to categories with at least one available flagged drink. Migration `0002_alcohol_free_variant.sql` converts trailing name stars into this flag and removes the old fixed legend, preserving the rest of the menu. Apply it before deploying the updated Worker.
+
 Names, details and category changes are saved immediately. Availability changes affect the next public page load or tab refocus; an already open page does not poll continuously. Turning a base drink off does not automatically turn cocktails containing it off. The old PDF remains an historical asset; the current menu no longer advertises it as a current download.
 
 ## Development and verification

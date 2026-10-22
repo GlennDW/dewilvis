@@ -1,7 +1,7 @@
 // Ephemeral local preview only. Never included in the deployment asset allowlist.
 // Uses a fake session and an in-memory database; no real accounts or data.
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 const origin = 'http://127.0.0.1:8795';
 const csrf = 'b'.repeat(64);
 const runtime = new Miniflare(convertV4MiniflareOptions({
@@ -32,8 +32,10 @@ const runtime = new Miniflare(convertV4MiniflareOptions({
   },
 }));
 const db = await runtime.getD1Database('DB');
-const migration = await readFile(new URL('../migrations/0001_menu.sql',import.meta.url),'utf8');
-await db.batch(migration.split('\n').filter(line => line.trim() && !line.startsWith('--')).map(line => db.prepare(line)));
+for (const file of (await readdir(new URL('../migrations/', import.meta.url))).filter(file => file.endsWith('.sql')).sort()) {
+  const migration = await readFile(new URL('../migrations/' + file, import.meta.url), 'utf8');
+  await db.batch(migration.split('\n').filter(line => line.trim() && !line.startsWith('--')).map(line => db.prepare(line)));
+}
 await runtime.ready;
 console.log('Local preview: '+origin+'/manage/ (password: preview; temporary data only)');
 for (const signal of ['SIGINT','SIGTERM']) process.on(signal,async () => { await runtime.dispose(); process.exit(0); });
