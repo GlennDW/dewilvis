@@ -42,7 +42,9 @@ Open `http://127.0.0.1:8795/manage/`, select Glenn, and use password `preview`. 
 
 ## First production release
 
-The code is prepared, but no production database or domain has been provisioned. Publishing is a separate release step. Do not publish the website's new links until the drinks Worker is live.
+First published on 2026-10-22. The live drinks Worker uses dedicated D1 database `a9307fd4-72df-419a-a3cc-022b71a0a1dd` and custom domain `drinks.dewilvis.be`. Initial deployed source: `8e67a7f3939015bfb5060017d8491888be1277cc`; Worker version: `0b0d8a82-1cbe-40ec-8332-72a1f7f7d5bd`. The initial migration imported 53 drinks; the public API returned all 53 and the private APIs rejected signed-out requests with 401. Login credentials and the existing Recipes/Saver services were unchanged.
+
+The following steps document a fresh installation. For this deployed service, retain the configured database ID and follow the later-release backup instructions; do not create another database or rerun the initial import.
 
 1. In the same Cloudflare account as `recipe-keeper`, create **a new database** using `npx wrangler d1 create dewilvis-drinks`. Replace `REPLACE_WITH_NEW_DRINKS_DATABASE_ID` in `wrangler.jsonc` with its returned ID. Never substitute the Recipes or Saver database ID.
 2. Review and commit the intentional changes, finish the existing website merge, push, and verify that the checkout matches the fetched remote revision. The GitHub workflow runs the checks but does not publish or store Cloudflare credentials.
