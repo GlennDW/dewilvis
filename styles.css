@@ -231,7 +231,7 @@ body.menu-open { overflow: hidden; }
 .project-image { aspect-ratio: 4 / 3; display: grid; place-items: center; border-radius: var(--radius-md); overflow: hidden; }
 .project-image img { width: 75%; height: 75%; object-fit: contain; transition: transform .45s cubic-bezier(.22,1,.36,1); }
 .project-card:hover .project-image img { transform: scale(1.04); }
-.project-pink .project-image { background: var(--coral); }
+.project-pink .project-image { background: #f9c6cf; }
 .project-pink .project-image img { width: 88%; height: 88%; }
 .project-paper .project-image { background: var(--coral); }
 .project-lastec .project-image { background: var(--paper-warm); }
