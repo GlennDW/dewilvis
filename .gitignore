@@ -1,0 +1,5 @@
+node_modules/
+.wrangler/
+drinks-service/dist/
+drinks-service/backups/
+.dev.vars

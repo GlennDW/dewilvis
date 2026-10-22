@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#082f4a"><meta name="robots" content="noindex,nofollow">
+  <title>Drankbeheer — De WilVis</title>
+  <link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/manage/manage.css">
+  <script type="module" src="/app.js"></script><script type="module" src="/manage/manage.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ga naar het beheer</a>
+  <header class="site-header" data-site-nav>
+    <nav class="glass-nav shell" aria-label="Hoofdnavigatie">
+      <a class="brand" href="https://dewilvis.be/" aria-label="De WilVis — home"><img src="/ClearBG/DeWilVis-whale-blue.png" width="5500" height="5500" alt=""><span>De WilVis</span></a>
+      <div class="nav-actions"><a class="nav-cta" href="/drinks.html">Drankjes <span aria-hidden="true">↗</span></a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open menu"><span></span><span></span></button></div>
+    </nav>
+  </header>
+  <main id="main" class="shell manage-main">
+    <div class="manage-intro"><p class="eyebrow">Voor de schenkers · Privé</p></div>
+    <p id="message" class="manage-message" role="status" aria-live="polite">Je sessie controleren…</p>
+    <section id="login-panel" class="manage-panel" hidden>
+      <h2>Welkom terug.</h2><p>Meld je aan met je account van Recipes en Saver.</p>
+      <form id="login-form" class="manage-form">
+        <label>Naam<select name="user" autocomplete="username"><option value="glenn">Glenn</option><option value="karen">Karen</option></select></label>
+        <label>Wachtwoord<input name="password" type="password" autocomplete="current-password" required maxlength="256"></label>
+        <button class="button button-primary" type="submit">Aanmelden →</button>
+      </form>
+    </section>
+    <section id="editor" hidden>
+      <div class="manage-toolbar"><div><h1>Onze drankjes.</h1><p id="count"></p></div><button id="add" class="button button-primary" type="button">+ Drankje toevoegen</button></div>
+      <div class="manage-filters">
+        <label>Zoeken<input id="search" type="search" placeholder="Naam of ingrediënten…"></label>
+        <label>Categorie<select id="category-filter"><option value="all">Alles</option></select></label>
+        <label>Aanbod<select id="availability-filter"><option value="all">Alle drankjes</option><option value="yes">Beschikbaar</option><option value="no">Niet beschikbaar</option></select></label>
+      </div>
+      <button id="reload" class="text-link" type="button">Kaart opnieuw laden ↻</button>
+      <div id="list" class="manage-list" aria-live="polite"></div>
+    </section>
+  </main>
+  <dialog id="drink-dialog" aria-labelledby="form-title">
+    <form id="drink-form" class="manage-form">
+      <h2 id="form-title">Drankje aanpassen</h2>
+      <label>Naam<input id="drink-name" name="name" required maxlength="120"></label>
+      <label>Beschrijving of ingrediënten<textarea id="drink-details" name="details" rows="3" maxlength="600"></textarea></label>
+      <label>Categorie<select id="drink-category" name="category" required></select></label>
+      <label class="availability-control"><span>Beschikbaar op de publieke kaart</span><input class="availability-switch" id="drink-available" name="available" type="checkbox" role="switch"></label>
+      <p>Wijzigingen verschijnen na opslaan op de publieke kaart. Niet beschikbaar? Het drankje blijft hier bewaard.</p>
+      <p id="form-message" class="manage-message" role="alert"></p>
+      <div class="manage-actions"><button class="button button-primary" type="submit">Opslaan</button><button id="cancel" class="button button-outline" type="button">Annuleren</button></div>
+    </form>
+  </dialog>
+  <footer class="site-footer shell"><p>Goeie dingen beginnen klein.</p><a href="https://recipes.dewilvis.be/">Recipes ↗</a><a href="https://saver.dewilvis.be/">Saver ↗</a></footer>
+</body>
+</html>

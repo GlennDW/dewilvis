@@ -2,24 +2,15 @@
 export const sites = [
   { id: "recipes", number: "01", name: "Recipes", kicker: "Uit de keuken", description: "Recepten die mogen vlekken, veranderen en doorgegeven worden.", href: "https://recipes.dewilvis.be", status: "Nu geopend", state: "live", accent: "coral", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
   { id: "lab", number: "02", name: "Lab", kicker: "Proberen mag", description: "Experimenten, prototypes en ideeën die nog geen vaste vorm nodig hebben.", href: "/index.html#lab", status: "In opbouw", accent: "mint", requiresAuth: false, icon: "/ClearBG/DeWilVis-blue.png" },
-  { id: "private", number: "03", name: "Private", kicker: "Voor de clan", description: "Een besloten plek voor foto’s, plannen en dingen die onder ons blijven.", href: "/index.html#private", status: "Later", accent: "butter", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
+  { id: "private", number: "03", name: "Private", kicker: "Voor de clan", description: "Onze recepten, bewaarde ideeën en het beheer van de drankkaart.", href: "/private.html", status: "Voor de clan", state: "live", accent: "butter", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
+  { id: "instagram", number: "04", name: "Instagram Saver", kicker: "Ideeën die blijven", description: "Volg je bewaarde Reels van Telegram tot in je Second Brain, via je eigen private verbinding.", href: "/instagram/", status: "Privé verbonden", accent: "mint", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
 ];
 
 export const navigationItems = [
   { name: "Home", label: "Welkom bij De WilVis", href: "/index.html", state: "live" },
-  { name: "Drankjes", label: "Zoek in de mobiele drankkaart", href: "/drinks.html", state: "live" },
-  { name: "DeVisKar", label: "Karen — research & consultancy", href: "/DeVisKar/", state: "live" },
+  { name: "Drankjes", label: "Zoek in de mobiele drankkaart", href: "https://drinks.dewilvis.be/", state: "live" },
   { name: "Portfolio", label: "Logo, UI & UX design", href: "/portfolio/", state: "live" },
-  { name: "Recipes", label: "Ontdek onze recepten", href: "https://recipes.dewilvis.be", state: "live" },
-  { name: "Lab", label: "Digitale experimenten", href: "/index.html#lab", state: "soon" },
-  { name: "Private", label: "Voor de clan", href: "/index.html#private", state: "private" },
-];
-
-export const menuGroups = [
-  { id: "zero", label: "0.0%", title: "Zonder promillage", intro: "Vol karakter, zonder alcohol.", items: [["Cornet 0.0", "Alcoholvrij blond bier"], ["Fony’s", "Alcoholvrij speciaalbier"], ["Limbo", "Fruitig alcoholvrij bier"], ["Dokkie", "Alcoholvrij speciaalbier"], ["Mikkeller", "Alcoholvrij speciaalbier"], ["Limbo Riesling", "Fris & druivig"], ["Limbo Dragonfruit", "Tropisch & zacht"], ["Tante Nonneke", "Alcoholvrij aperitief"]] },
-  { id: "soft", label: "Fris", title: "Frisdrank", intro: "Koel, sprankelend of gewoon plat.", items: [["Cola Zero", ""], ["Ice Tea Zero", ""], ["Tomatensap", ""], ["Plat water", ""], ["Spuitwater", ""], ["Tonic", ""], ["Ginger Beer", ""], ["San Pellegrino bloedsinaasappel", ""], ["Ritchie LemonGinger", ""]] },
-  { id: "beer-wine", label: "Bier & wijn", title: "Bier & wijn", intro: "Bekende favorieten en iets om te ontdekken.", items: [["Appel Cider", ""], ["Cava", ""], ["Rode wijn", ""], ["Rosé wijn", ""], ["Witte wijn", ""], ["Dessertwijn", ""], ["Stella Artois", ""], ["Lindemans Kriek", ""], ["Tripel Karmeliet", ""], ["Tripel d’Anvers", ""], ["Grimbergen Blond", ""], ["Chimay Blauw", ""], ["Roomer", ""]] },
-  { id: "spirits", label: "Sterk", title: "Digestief & sterk", intro: "Een kleine afsluiter, rustig geschonken.", items: [["Amaretto", ""], ["Limoncello", ""], ["Crema di Limoncello", ""], ["Amaro", ""], ["Rum", ""], ["Gin", ""], ["Vodka", ""], ["Bourbon", ""]] },
-  { id: "zero-cocktails", label: "0.0 cocktails", title: "Cocktails zonder promillage", intro: "Gelaagd, feestelijk en helemaal alcoholvrij.", items: [["Mediterranean Spritz", "Opius Albedo · Mediterranean tonic · limoen"], ["Nigredo Storm", "Opius Nigredo · ginger beer · limoen"], ["Rubedo Tonic", "Opius Rubedo · Indian tonic"], ["Opius Tonic", "Opius Amaro · Indian tonic"]] },
-  { id: "cocktails", label: "Cocktails", title: "Cocktails", intro: "Klassiekers, met onze eigen bocht erin.", items: [["Old Fashioned", "Bourbon · Angostura · suikersiroop"], ["Dark & Stormy*", "Rum · ginger beer · limoen"], ["Cuba Libre*", "Rum · Cola Zero · limoen"], ["Moscow Mule", "Vodka · ginger beer · limoen"], ["Bloody Mary", "Vodka · tomatensap · Worcestershire"], ["Espresso Martini", "Vodka · espresso · koffielikeur"], ["Vodka Tonic", "Vodka · tonic"], ["Skinny Bitch", "Vodka · spuitwater · limoen"], ["Gin & Tonic*", "Gin · tonic"], ["Limoncello Spritz", "Limoncello · cava · spuitwater"], ["Hugo", "Vlierbloesem · cava · spuitwater"]], footnote: "* Ook alcoholvrij verkrijgbaar." },
+  { name: "Recipes", label: "Ontdek onze recepten", href: "https://recipes.dewilvis.be/", state: "live" },
+  { name: "Instagram Saver", label: "Je bewaarde ideeën", href: "https://saver.dewilvis.be/", state: "private" },
+  { name: "Private", label: "Recepten, bewaarde ideeën en drankbeheer", href: "/private.html", state: "private" },
 ];

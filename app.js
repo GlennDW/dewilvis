@@ -1,4 +1,4 @@
-import { sites, menuGroups, navigationItems } from "./site-registry.js";
+import { sites, navigationItems } from "./site-registry.js";
 
 const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
@@ -15,9 +15,7 @@ if (siteGrid) {
       <div class="site-card-top"><span>${site.number}</span><span class="status-pill">${escapeHtml(site.status)}</span></div>
       <img class="site-card-icon" src="${site.icon}" width="5500" height="5500" alt="" loading="lazy">
       <div><p class="eyebrow">${escapeHtml(site.kicker)}</p><h3>${escapeHtml(site.name)}</h3><p>${escapeHtml(site.description)}</p></div>
-      ${site.state === "live"
-        ? `<a class="site-card-action" href="${escapeHtml(site.href)}">Open de recepten <span aria-hidden="true">↗</span></a>`
-        : `<span class="site-card-action">${site.requiresAuth ? "Klaar voor toegang" : "Binnenkort verkennen"} <span aria-hidden="true">↗</span></span>`}
+      ${site.state === "live" || site.id === "instagram" ? `<a class="site-card-action" href="${escapeHtml(site.href)}">${site.id === "recipes" ? "Open de recepten" : site.id === "private" ? "Open de privéplekken" : "Open het dashboard"} <span aria-hidden="true">↗</span></a>` : `<span class="site-card-action">${site.requiresAuth ? "Klaar voor toegang" : "Binnenkort verkennen"} <span aria-hidden="true">↗</span></span>`}
     </article>
   `).join("");
 }
@@ -35,10 +33,16 @@ if (menuToggle) {
           <img src="${new URL("./ClearBG/DeWilVis-whale-blue.png", import.meta.url).href}" width="5500" height="5500" alt="">
           <span>De WilVis</span>
         </a>
-        <button class="menu-close" type="button" data-menu-close aria-label="Sluit menu">
-          <span></span><span></span>
-        </button>
+        <div class="overlay-actions">
+          <a class="overlay-account" href="${new URL('./private.html', import.meta.url).href}" data-overlay-link aria-label="Privéplekken en aanmelden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 21v-2a7 7 0 0 1 14 0v2"></path></svg>
+          </a>
+          <button class="menu-close" type="button" data-menu-close aria-label="Sluit menu">
+            <span></span><span></span>
+          </button>
+        </div>
       </div>
+      <div class="overlay-content">
       <nav class="overlay-nav shell" aria-label="Alle plekken" id="menu-overlay-title">
         <p class="eyebrow">Alle plekken</p>
         <ol>
@@ -47,14 +51,14 @@ if (menuToggle) {
               <a href="${item.href}" data-overlay-link>
                 <span class="overlay-number">${String(index + 1).padStart(2, "0")}</span>
                 <span class="overlay-name">${escapeHtml(item.name)}</span>
-                <span class="overlay-label">${escapeHtml(item.label)}</span>
-                ${item.state !== "live" ? `<span class="overlay-state">${item.state === "private" ? "Besloten" : "Binnenkort"}</span>` : `<span class="overlay-arrow" aria-hidden="true">↗</span>`}
+                ${item.state === "private" ? `<span class="overlay-lock"><span class="sr-only">Privé</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>` : item.state !== "live" ? `<span class="overlay-state">Binnenkort</span>` : `<span class="overlay-arrow" aria-hidden="true">↗</span>`}
               </a>
             </li>
           `).join("")}
         </ol>
       </nav>
       <p class="overlay-foot shell">Home of De WilVis · Gent, België</p>
+      </div>
     </div>
   `;
   document.body.append(overlay);
@@ -106,6 +110,7 @@ const filterRow = document.querySelector("[data-menu-filters]");
 const searchInput = document.querySelector("[data-menu-search]");
 
 if (menuList && filterRow && searchInput) {
+  let menuGroups = [];
   let activeFilter = "all";
   let query = "";
 
@@ -134,8 +139,30 @@ if (menuList && filterRow && searchInput) {
     menuList.setAttribute("aria-busy", "false");
   };
 
-  renderFilters();
-  renderMenu();
+  const loadMenu = async () => {
+    menuList.setAttribute("aria-busy", "true");
+    searchInput.disabled = true;
+    const local = ["localhost", "127.0.0.1", "drinks.dewilvis.be"].includes(location.hostname);
+    try {
+      const response = await fetch(local ? "/api/menu" : "https://drinks.dewilvis.be/api/menu", { credentials: "omit", cache: "no-store", signal: AbortSignal.timeout(10000) });
+      if (!response.ok) throw new Error("menu");
+      const data = await response.json();
+      if (!Array.isArray(data.groups)) throw new Error("menu");
+      menuGroups = data.groups;
+      if (!menuGroups.some(group => group.id === activeFilter)) activeFilter = "all";
+      renderFilters();
+      renderMenu();
+      searchInput.disabled = !menuGroups.length;
+      if (!menuGroups.length) menuList.innerHTML = '<div class="empty-state"><h2>Even geen drankjes op de kaart.</h2><p>Vraag ons wat we vandaag kunnen aanbieden.</p></div>';
+    } catch {
+      menuGroups = [];
+      filterRow.innerHTML = "";
+      menuList.innerHTML = '<div class="empty-state"><h2>De drankkaart is even niet bereikbaar.</h2><p>Vraag ons wat er vandaag beschikbaar is.</p><button class="button button-primary" type="button" data-retry-menu>Opnieuw laden</button></div>';
+    } finally { menuList.setAttribute("aria-busy", "false"); }
+  };
+  menuList.addEventListener("click", event => { if (event.target.closest("[data-retry-menu]")) loadMenu(); });
+  loadMenu();
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) loadMenu(); });
   filterRow.addEventListener("click", (event) => {
     const button = event.target.closest("[data-filter]");
     if (!button) return;

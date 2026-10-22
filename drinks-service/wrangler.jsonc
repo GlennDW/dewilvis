@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "dewilvis-drinks",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-16",
+  "workers_dev": false,
+  "preview_urls": false,
+  "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": true },
+  "services": [{ "binding": "AUTH_SERVICE", "service": "recipe-keeper" }],
+  "d1_databases": [{
+    "binding": "DB", "database_name": "dewilvis-drinks",
+    "database_id": "REPLACE_WITH_NEW_DRINKS_DATABASE_ID", "migrations_dir": "migrations"
+  }],
+  "vars": {
+    "APP_ORIGIN": "https://drinks.dewilvis.be",
+    "AUTH_ORIGIN": "https://recipes.dewilvis.be"
+  },
+  "routes": [{ "pattern": "drinks.dewilvis.be", "custom_domain": true }]
+}

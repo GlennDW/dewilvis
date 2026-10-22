@@ -62,10 +62,15 @@ body.menu-open { overflow: hidden; }
 .menu-overlay[hidden] { display: none; }
 .menu-overlay { position: fixed; z-index: 500; inset: 0; overflow-y: auto; background: rgba(238,231,218,.7); color: var(--ink); backdrop-filter: blur(32px) saturate(135%); -webkit-backdrop-filter: blur(32px) saturate(135%); opacity: 0; transition: opacity .3s ease; }
 .menu-overlay.is-open { opacity: 1; }
-.menu-overlay-panel { width: var(--shell); height: 4rem; max-height: calc(100svh - 2rem); margin: max(1rem, env(safe-area-inset-top)) auto 0; padding: 0 0 2rem; overflow-y: auto; border: 1px solid rgba(255,255,255,.52); border-radius: 2rem; background: linear-gradient(135deg, rgba(255,253,250,.78), rgba(242,187,194,.26)); box-shadow: 0 24px 80px rgba(3,37,59,.18); transition: height .55s cubic-bezier(.22,1,.36,1); }
+.menu-overlay-panel { display: flex; flex-direction: column; width: var(--shell); height: 4rem; max-height: calc(100svh - 2rem); margin: max(1rem, env(safe-area-inset-top)) auto 0; padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.52); border-radius: 2rem; background: linear-gradient(135deg, rgba(255,253,250,.78), rgba(242,187,194,.26)); box-shadow: 0 24px 80px rgba(3,37,59,.18); transition: height .55s cubic-bezier(.22,1,.36,1); }
 .menu-overlay.is-open .menu-overlay-panel { height: min(46rem, calc(100svh - 2rem)); }
-.menu-overlay-panel > .shell { width: 100%; }
-.overlay-head { min-height: 4rem; padding: .55rem .65rem .55rem .75rem; display: flex; align-items: center; justify-content: space-between; }
+.menu-overlay-panel > .shell, .overlay-content > .shell { width: 100%; }
+.overlay-head { flex: 0 0 auto; min-height: 4rem; padding: .55rem .65rem .55rem .75rem; display: flex; align-items: center; justify-content: space-between; }
+.overlay-content { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 2rem; }
+.overlay-actions { display: flex; align-items: center; gap: .45rem; }
+.overlay-account { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 2.8rem; height: 2.8rem; border: 1px solid var(--line); border-radius: 50%; background: rgba(255,255,255,.45); }
+.overlay-account svg { width: 1.2rem; height: 1.2rem; }
+.overlay-account:hover { background: var(--white); }
 .overlay-brand img { width: 2.5rem; height: 2.5rem; }
 .menu-close { left: -2px; background: var(--ink); color: var(--white); border-color: var(--ink); }
 .overlay-nav { padding: clamp(3rem, 8vh, 7rem) clamp(1.1rem, 3vw, 2.5rem) 0; }
@@ -76,11 +81,12 @@ body.menu-open { overflow: hidden; }
 .overlay-nav a { min-height: clamp(5rem, 10vh, 7rem); padding: .8rem 0; display: grid; grid-template-columns: 2.5rem minmax(0,1fr) auto; align-items: center; gap: .6rem; }
 .overlay-number { align-self: start; padding-top: .55rem; font-size: .7rem; font-weight: 750; letter-spacing: .1em; color: rgba(8,47,74,.48); }
 .overlay-name { font-size: clamp(1.9rem, 5.2vw, 4.5rem); font-weight: 690; line-height: .9; letter-spacing: -.055em; transition: transform .25s ease; }
-.overlay-label { display: none; color: rgba(8,47,74,.58); }
 .overlay-arrow, .overlay-state { font-size: .75rem; font-weight: 750; }
+.overlay-lock { display: inline-flex; align-items: center; justify-content: center; }
+.overlay-lock svg { width: 1.2rem; height: 1.2rem; }
 .overlay-state { padding: .35rem .55rem; border: 1px solid var(--line); border-radius: 999px; }
 .overlay-nav a:hover .overlay-name { transform: translateX(.35rem); }
-.overlay-foot { margin-top: 2rem; font-size: .75rem; color: rgba(8,47,74,.48); }
+.overlay-foot { margin: 2rem 0 0; padding-inline: clamp(1.1rem, 3vw, 2.5rem); font-size: .75rem; color: rgba(8,47,74,.48); }
 .hero { position: relative; min-height: 100svh; padding-top: 8.5rem; padding-bottom: 4rem; display: grid; align-items: center; gap: 3rem; overflow: clip; }
 .hero-copy { position: relative; z-index: 2; }
 .hero h1 { max-width: 8ch; }
@@ -258,10 +264,9 @@ body.menu-open { overflow: hidden; }
   .site-grid { grid-template-columns: repeat(2, 1fr); }
   .site-card:first-child { grid-column: span 2; min-height: 32rem; }
   .site-footer { grid-template-columns: 1fr auto auto; }
-  .overlay-nav a { grid-template-columns: 3rem minmax(0,1fr) minmax(12rem,.4fr) auto; gap: 1rem; }
+  .overlay-nav a { grid-template-columns: 2rem minmax(0,1fr) 1.25rem; gap: .75rem; }
   .menu-overlay.is-open .menu-overlay-panel { height: min(40rem, calc(100svh - 2rem)); }
-  .overlay-name { min-width: 0; font-size: clamp(2.1rem, 3.5vw, 4.2rem); white-space: nowrap; }
-  .overlay-label { display: block; max-width: 9rem; font-size: .78rem; line-height: 1.2; }
+  .overlay-name { min-width: 0; font-size: clamp(1.8rem, 3vw, 3.5rem); overflow-wrap: anywhere; }
   .overlay-nav ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2rem; }
   .overlay-nav li:nth-last-child(-n + 2) { border-bottom: 1px solid var(--line); }
   .work-door-grid { grid-template-columns: repeat(2, 1fr); }
@@ -313,3 +318,22 @@ body.menu-open { overflow: hidden; }
   .menu-group { break-inside: avoid; border: 1px solid #aaa; background: white; }
   .menu-note { color: black; }
 }
+
+/* Shared entry point for the authenticated household applications. */
+.private-main { padding-block: 140px 90px; }
+.private-intro { max-width: 700px; margin-bottom: 48px; }
+.private-intro h1 { font-size: var(--step-3); line-height: 1.04; margin-block: 18px 26px; }
+.private-intro .private-access { font-size: var(--step--1); opacity: .75; max-width: 58ch; margin-top: 22px; }
+.private-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.private-card { display: flex; flex-direction: column; padding: clamp(24px, 3vw, 36px); border: 1px solid var(--line); border-radius: var(--radius-md); transition: transform .2s, box-shadow .2s; }
+.private-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.private-card h2 { font-size: clamp(1.6rem, 2.6vw, 2.5rem); line-height: 1.1; margin-block: 30px 16px; overflow-wrap: anywhere; }
+.private-card p { margin-block: 0 32px; }
+.private-card .text-link { margin-top: auto; }
+.private-card-recipes { background: var(--coral); }
+.private-card-saver { background: var(--mint); }
+.private-card-drinks { background: var(--butter); }
+@media(max-width: 760px) { .private-grid { grid-template-columns: 1fr; } .private-intro { margin-bottom: 32px; } }
+@media(prefers-reduced-motion: reduce) { .private-card { transition: none; } .private-card:hover { transform: none; } }
+
+#deviskar { scroll-margin-top: 110px; }
