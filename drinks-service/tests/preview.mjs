@@ -12,7 +12,7 @@ const runtime = new Miniflare(convertV4MiniflareOptions({
   serviceBindings:{
     ASSETS:async request => {
       const path = new URL(request.url).pathname;
-      const file = path.endsWith('/') ? path+'index.html' : path;
+      const file = ['/drinks','/private'].includes(path) ? path+'.html' : path.endsWith('/') ? path+'index.html' : path;
       try {
         const bytes = await readFile(new URL('../dist'+file, import.meta.url));
         const type = file.endsWith('.html') ? 'text/html; charset=utf-8' : file.endsWith('.js') ? 'text/javascript' : file.endsWith('.css') ? 'text/css' : file.endsWith('.png') ? 'image/png' : 'image/x-icon';

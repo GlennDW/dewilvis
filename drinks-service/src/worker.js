@@ -1,6 +1,8 @@
 const json = (data, status = 200) => Response.json(data, { status });
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
-const publicAssets = new Set(['/private.html', '/drinks.html', '/app.js', '/site-registry.js', '/styles.css', '/DeWilVis-drinks.png', '/favicon.ico', '/ClearBG/DeWilVis-whale-blue.png', '/ClearBG/DeWilVis-whale-white.png', '/manage/', '/manage/index.html', '/manage/manage.js', '/manage/manage.css']);
+// Workers Assets canonicalizes standalone HTML files to extensionless URLs.
+// Both spellings must reach Assets, including the destination of its redirects.
+const publicAssets = new Set(['/private', '/private.html', '/drinks', '/drinks.html', '/app.js', '/site-registry.js', '/styles.css', '/DeWilVis-drinks.png', '/favicon.ico', '/ClearBG/DeWilVis-whale-blue.png', '/ClearBG/DeWilVis-whale-white.png', '/manage/', '/manage/index.html', '/manage/manage.js', '/manage/manage.css']);
 const equal = (a, b) => {
   if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
   let diff = 0;
@@ -48,7 +50,7 @@ async function route(request, env) {
   const url = new URL(request.url), path = url.pathname, method = request.method;
   if (!['GET', 'HEAD', 'POST', 'PUT'].includes(method)) fail('Methode niet toegestaan.', 405);
   if (path === '/' || path === '/index.html' || path === '/manage') {
-    return Response.redirect(url.origin + (path === '/manage' ? '/manage/' : '/drinks.html'), 302);
+    return Response.redirect(url.origin + (path === '/manage' ? '/manage/' : '/drinks'), 302);
   }
   if (publicAssets.has(path) && ['GET', 'HEAD'].includes(method)) return env.ASSETS.fetch(request);
   if (path === '/api/menu' && method === 'GET') {

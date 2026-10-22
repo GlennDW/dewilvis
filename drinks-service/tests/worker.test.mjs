@@ -34,7 +34,7 @@ before(async () => {
 });
 after(async () => { await runtime?.dispose(); });
 function request(path, {method='GET', data, cookie='dw_session=test', token=csrf, from=origin, headers={}} = {}) {
-  return runtime.dispatchFetch(origin + path, {method, headers:{Cookie:cookie, Origin:from, 'X-CSRF-Token':token, 'Content-Type':'application/json', ...headers}, ...(data === undefined ? {} : {body:typeof data === 'string' ? data : JSON.stringify(data)})});
+  return runtime.dispatchFetch(origin + path, {redirect:'manual',method, headers:{Cookie:cookie, Origin:from, 'X-CSRF-Token':token, 'Content-Type':'application/json', ...headers}, ...(data === undefined ? {} : {body:typeof data === 'string' ? data : JSON.stringify(data)})});
 }
 const sample = {name:'Test Spritz',details:'Tonic · limoen',category:'soft',available:true};
 test('public menu contains the original menu and no management metadata', async () => {
@@ -46,6 +46,18 @@ test('public menu contains the original menu and no management metadata', async 
   assert.ok(data.groups.flatMap(g => g.items).some(([name]) => name === 'Cola Zero'));
   assert.ok(!JSON.stringify(data).includes('edited_by'));
   assert.ok(!JSON.stringify(data).includes('version'));
+});
+test('canonical HTML routes stay public after Workers Assets redirects', async () => {
+  for (const path of ['/drinks', '/drinks.html', '/private', '/private.html']) {
+    const response = await request(path, {cookie:''});
+    assert.equal(response.status,200,path);
+    assert.equal(await response.text(),'asset');
+  }
+  for (const path of ['/', '/index.html']) {
+    const response = await request(path, {cookie:''});
+    assert.equal(response.status,302);
+    assert.equal(response.headers.get('Location'),origin+'/drinks');
+  }
 });
 test('management reads and writes require authentication', async () => {
   assert.equal((await request('/api/drinks', {cookie:''})).status,401);
