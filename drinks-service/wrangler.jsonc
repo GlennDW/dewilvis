@@ -9,7 +9,7 @@
   "services": [{ "binding": "AUTH_SERVICE", "service": "recipe-keeper" }],
   "d1_databases": [{
     "binding": "DB", "database_name": "dewilvis-drinks",
-    "database_id": "REPLACE_WITH_NEW_DRINKS_DATABASE_ID", "migrations_dir": "migrations"
+    "database_id": "a9307fd4-72df-419a-a3cc-022b71a0a1dd", "migrations_dir": "migrations"
   }],
   "vars": {
     "APP_ORIGIN": "https://drinks.dewilvis.be",

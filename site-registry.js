@@ -3,7 +3,7 @@ export const sites = [
   { id: "recipes", number: "01", name: "Recipes", kicker: "Uit de keuken", description: "Recepten die mogen vlekken, veranderen en doorgegeven worden.", href: "https://recipes.dewilvis.be", status: "Nu geopend", state: "live", accent: "coral", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
   { id: "lab", number: "02", name: "Lab", kicker: "Proberen mag", description: "Experimenten, prototypes en ideeën die nog geen vaste vorm nodig hebben.", href: "/index.html#lab", status: "In opbouw", accent: "mint", requiresAuth: false, icon: "/ClearBG/DeWilVis-blue.png" },
   { id: "private", number: "03", name: "Private", kicker: "Voor de clan", description: "Onze recepten, bewaarde ideeën en het beheer van de drankkaart.", href: "/private.html", status: "Voor de clan", state: "live", accent: "butter", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
-  { id: "instagram", number: "04", name: "Instagram Saver", kicker: "Ideeën die blijven", description: "Volg je bewaarde Reels van Telegram tot in je Second Brain, via je eigen private verbinding.", href: "/instagram/", status: "Privé verbonden", accent: "mint", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
+  { id: "instagram", number: "04", name: "Instagram Saver", kicker: "Ideeën die blijven", description: "Je bewaarde Reels, samenvattingen en verslagen. Eén bibliotheek, met dezelfde login als Recipes.", href: "https://saver.dewilvis.be", status: "Nu geopend", state: "live", accent: "mint", requiresAuth: true, icon: "/ClearBG/DeWilVis-whale-blue.png" },
 ];
 
 export const navigationItems = [
