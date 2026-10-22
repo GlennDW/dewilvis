@@ -155,10 +155,8 @@ body.menu-open { overflow: hidden; }
 .menu-page { background: var(--ink); color: var(--white); }
 .menu-page .glass-nav { color: var(--ink); }
 .menu-page .nav-cta { color: var(--white); }
-.menu-hero { min-height: 82svh; padding-top: 9rem; padding-bottom: 3rem; display: grid; align-items: center; gap: 2rem; overflow: hidden; }
+.menu-hero { padding-top: 9rem; padding-bottom: 3rem; overflow: hidden; }
 .menu-hero h1 { max-width: 9ch; }
-.menu-hero p:last-child { max-width: 35rem; font-size: var(--step-1); color: rgba(255,253,250,.68); }
-.menu-doodle { width: 100%; max-height: 22rem; object-fit: contain; object-position: center; }
 .menu-tools { position: sticky; z-index: 20; top: 5.8rem; padding: .65rem; display: grid; gap: .65rem; border: 1px solid rgba(255,255,255,.16); border-radius: var(--menu-radius); background: rgba(3,37,59,.78); backdrop-filter: blur(20px) saturate(130%); box-shadow: 0 12px 30px rgba(0,0,0,.18); }
 .search-field { min-height: 3.2rem; display: flex; align-items: center; gap: .6rem; padding-inline: .9rem; border-radius: calc(var(--menu-radius) - .65rem); background: rgba(255,255,255,.1); }
 .search-field svg { width: 1.2rem; fill: none; stroke: currentColor; stroke-width: 1.7; }
@@ -281,8 +279,6 @@ body.menu-open { overflow: hidden; }
   .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .portfolio-process li { grid-template-columns: 3rem .65fr 1.35fr; align-items: baseline; }
   .portfolio-process li p { grid-column: 3; }
-  .menu-hero { grid-template-columns: 1fr .75fr; }
-  .menu-doodle { max-height: 32rem; }
   .menu-tools { grid-template-columns: minmax(15rem, .7fr) 1.3fr; }
   .menu-list { grid-template-columns: repeat(2, 1fr); align-items: start; }
 }
@@ -310,10 +306,10 @@ body.menu-open { overflow: hidden; }
   .glass-nav, .menu-group, .menu-tools { border-width: 2px; }
 }
 @media print {
-  .site-header, .menu-tools, .back-to-top, .menu-doodle, .site-footer { display: none !important; }
+  .site-header, .menu-tools, .back-to-top, .site-footer { display: none !important; }
   .menu-page { background: white; color: black; }
   .menu-hero { min-height: 0; padding: 1cm 0; }
-  .menu-hero p:last-child, .menu-group header > p:last-child, .drink-detail { color: #333; }
+  .menu-group header > p:last-child, .drink-detail { color: #333; }
   .menu-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5cm; padding: 0; }
   .menu-group { break-inside: avoid; border: 1px solid #aaa; background: white; }
   .menu-note { color: black; }
