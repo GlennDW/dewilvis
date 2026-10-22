@@ -1,0 +1,32 @@
+.lastec-page { background: var(--paper); }
+.lastec-hero { padding-block: 10rem 4rem; }
+.lastec-back { display: inline-block; margin-bottom: 2.5rem; font-size: .85rem; }
+.lastec-hero h1 { max-width: 14ch; }
+.lastec-lead { max-width: 48ch; font-size: var(--step-1); }
+.lastec-final { margin-top: 3rem; min-height: 240px; padding: clamp(2rem, 7vw, 6rem); display: grid; place-items: center; background: var(--paper-warm); border-radius: var(--radius-lg); }
+.lastec-final img { width: min(100%, 820px); height: auto; }
+.lastec-facts { display: grid; gap: 1.5rem; margin: 2rem 0 0; padding-block: 1.5rem; border-bottom: 1px solid var(--line); }
+.lastec-facts dt { font-size: .75rem; color: #52636c; margin-bottom: .4rem; }
+.lastec-facts dd { margin: 0; font-weight: 650; }
+.lastec-client { display: grid; gap: 1.5rem; padding-block: 3rem 6rem; }
+.lastec-client h2, .lastec-process h2, .lastec-result h2 { font-size: var(--step-3); }
+.lastec-client p:not(.eyebrow) { max-width: 58ch; }
+.lastec-process { padding-bottom: 6rem; }
+.lastec-concepts { display: grid; gap: 3.5rem 2rem; }
+.lastec-concept { margin: 0; min-width: 0; }
+.lastec-concept-art { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: clamp(1.5rem, 4vw, 3rem); background: var(--paper-warm); border-radius: var(--radius-md); }
+.lastec-concept-art img { width: 100%; height: 100%; max-height: 280px; object-fit: contain; }
+.lastec-concept figcaption { padding: 1.5rem .2rem 0; }
+.lastec-concept h3 { font-size: 1.3rem; margin-block: .6rem; }
+.lastec-concept p { max-width: 46ch; margin-bottom: 0; color: #52636c; }
+.lastec-result { padding-block: clamp(4rem, 8vw, 7rem); background: var(--paper-warm); }
+.lastec-result p:not(.eyebrow) { max-width: 52ch; }
+.lastec-result-art { padding-block: 3rem; }
+.lastec-result-art img { width: min(100%, 900px); height: auto; }
+.lastec-result .button { gap: .75rem; }
+@media (min-width: 700px) {
+  .lastec-facts { grid-template-columns: repeat(3, 1fr); }
+  .lastec-client { grid-template-columns: 1fr 2fr; }
+  .lastec-concepts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .lastec-page .reveal { transition: none; } }
