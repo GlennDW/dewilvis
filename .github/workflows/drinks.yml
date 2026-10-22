@@ -1,9 +1,9 @@
 name: Drinks service
 on:
   push:
-    paths: ['drinks-service/**', 'app.js', 'site-registry.js', 'drinks.html', 'private.html', 'styles.css', '.github/workflows/drinks.yml']
+    paths: ['drinks-service/**', 'app.js', 'site-registry.js', 'drinks.html', 'private.html', 'private.js', 'styles.css', '.github/workflows/drinks.yml']
   pull_request:
-    paths: ['drinks-service/**', 'app.js', 'site-registry.js', 'drinks.html', 'private.html', 'styles.css', '.github/workflows/drinks.yml']
+    paths: ['drinks-service/**', 'app.js', 'site-registry.js', 'drinks.html', 'private.html', 'private.js', 'styles.css', '.github/workflows/drinks.yml']
 permissions:
   contents: read
 jobs:

@@ -2,7 +2,10 @@ const json = (data, status = 200) => Response.json(data, { status });
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
 // Workers Assets canonicalizes standalone HTML files to extensionless URLs.
 // Both spellings must reach Assets, including the destination of its redirects.
-const publicAssets = new Set(['/private', '/private.html', '/drinks', '/drinks.html', '/app.js', '/site-registry.js', '/styles.css', '/DeWilVis-drinks.png', '/favicon.ico', '/ClearBG/DeWilVis-whale-blue.png', '/ClearBG/DeWilVis-whale-white.png', '/manage/', '/manage/index.html', '/manage/manage.js', '/manage/manage.css']);
+const publicAssets = new Set(['/private', '/private.html', '/private.js', '/drinks', '/drinks.html', '/app.js', '/site-registry.js', '/styles.css', '/DeWilVis-drinks.png', '/favicon.ico', '/ClearBG/DeWilVis-whale-blue.png', '/ClearBG/DeWilVis-whale-white.png', '/manage/', '/manage/index.html', '/manage/manage.js', '/manage/manage.css']);
+const websiteOrigins = ['https://dewilvis.be', 'https://www.dewilvis.be'];
+const authPaths = new Set(['/api/login', '/api/me', '/api/logout']);
+const authOriginAllowed = (origin, env) => origin === env.APP_ORIGIN || websiteOrigins.includes(origin);
 const equal = (a, b) => {
   if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
   let diff = 0;
@@ -48,6 +51,17 @@ async function auth(request, env, path, method = 'GET', data) {
 const drink = (row) => ({ id: row.id, name: row.name, details: row.details, category: row.category, available: Boolean(row.available), position: row.position, version: row.version });
 async function route(request, env) {
   const url = new URL(request.url), path = url.pathname, method = request.method;
+  // Only the shared login endpoints accept credentialed requests from the main website.
+  // Drink edits retain their original, same-origin-only access checks.
+  if (method === 'OPTIONS') {
+    if (url.origin !== env.APP_ORIGIN || !authPaths.has(path) || !authOriginAllowed(request.headers.get('Origin'), env)) fail('Ongeldige herkomst.', 403);
+    if (!['GET', 'POST'].includes(request.headers.get('Access-Control-Request-Method'))) fail('Methode niet toegestaan.', 405);
+    return new Response(null, { status: 204, headers: {
+      'Access-Control-Allow-Methods': 'GET, POST',
+      'Access-Control-Allow-Headers': 'Content-Type, X-CSRF-Token',
+      'Access-Control-Max-Age': '600',
+    } });
+  }
   if (!['GET', 'HEAD', 'POST', 'PUT'].includes(method)) fail('Methode niet toegestaan.', 405);
   if (path === '/' || path === '/index.html' || path === '/manage') {
     return Response.redirect(url.origin + (path === '/manage' ? '/manage/' : '/drinks'), 302);
@@ -61,7 +75,7 @@ async function route(request, env) {
     return json({ groups: groups.results.map(group => ({ ...group, items: items.results.filter(item => item.category === group.id).map(item => [item.name, item.details]) })).filter(group => group.items.length) });
   }
   if (!path.startsWith('/api/')) fail('Niet gevonden.', 404);
-  if (['POST', 'PUT'].includes(method) && (url.origin !== env.APP_ORIGIN || request.headers.get('Origin') !== env.APP_ORIGIN)) fail('Ongeldige herkomst.', 403);
+  if (['POST', 'PUT'].includes(method) && (url.origin !== env.APP_ORIGIN || (authPaths.has(path) ? !authOriginAllowed(request.headers.get('Origin'), env) : request.headers.get('Origin') !== env.APP_ORIGIN))) fail('Ongeldige herkomst.', 403);
   if (path === '/api/login' && method === 'POST') {
     const input = await body(request);
     const user = text(input.user, 30, true).toLowerCase();
@@ -113,9 +127,15 @@ export default {
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'no-referrer');
     response.headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
-    if (new URL(request.url).pathname === '/api/menu') {
-      const origin = request.headers.get('Origin');
-      if (['https://dewilvis.be', 'https://www.dewilvis.be'].includes(origin)) response.headers.set('Access-Control-Allow-Origin', origin);
+    const path = new URL(request.url).pathname, origin = request.headers.get('Origin');
+    if (path === '/api/menu') {
+      if (websiteOrigins.includes(origin)) response.headers.set('Access-Control-Allow-Origin', origin);
+      response.headers.set('Vary', 'Origin');
+    } else if (authPaths.has(path)) {
+      if (authOriginAllowed(origin, env)) {
+        response.headers.set('Access-Control-Allow-Origin', origin);
+        response.headers.set('Access-Control-Allow-Credentials', 'true');
+      }
       response.headers.set('Vary', 'Origin');
     }
     return response;

@@ -4,7 +4,7 @@ const root = new URL('../../', import.meta.url);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 // Explicit allowlist: never publish source, configuration, database files or tests.
-for (const file of ['drinks.html', 'private.html', 'app.js', 'site-registry.js', 'styles.css', 'DeWilVis-drinks.png', 'favicon.ico']) {
+for (const file of ['drinks.html', 'private.html', 'private.js', 'app.js', 'site-registry.js', 'styles.css', 'DeWilVis-drinks.png', 'favicon.ico']) {
   await cp(new URL(file, root), new URL(file, output));
 }
 await mkdir(new URL('ClearBG/', output));

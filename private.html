@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#082f4a"><meta name="robots" content="noindex,nofollow">
   <title>Private — De WilVis</title>
   <link rel="icon" href="favicon.ico"><link rel="stylesheet" href="styles.css">
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js"></script><script type="module" src="private.js"></script>
 </head>
 <body data-page="private">
   <a class="skip-link" href="#main">Ga naar de inhoud</a>
@@ -16,7 +16,20 @@
     </nav>
   </header>
   <main id="main" class="private-main shell">
-    <section class="private-intro"><p class="eyebrow">Voor de clan · Privé</p><h1>Onze eigen<br><em>plekken.</em></h1><p>Recepten om te delen, ideeën om bij te houden en drankjes om klaar te zetten.</p><p class="private-access">Gebruik je vertrouwde account van Recipes en Saver. Je gegevens en het beheer blijven achter de aanmelding van elke plek.</p></section>
+    <div class="private-welcome">
+      <section class="private-intro"><p class="eyebrow">Voor de clan · Privé</p><h1>Onze eigen<br><em>plekken.</em></h1><p>Recepten om te delen, ideeën om bij te houden en drankjes om klaar te zetten.</p><p class="private-access">Eén keer aanmelden met je vertrouwde account. Daarna ben je welkom bij Recipes, Instagram Saver en drankbeheer.</p></section>
+      <section class="private-auth" aria-labelledby="private-auth-title">
+        <h2 id="private-auth-title">Meld je aan.</h2>
+        <p id="private-auth-message" class="private-auth-message" role="status" aria-live="polite">Je sessie controleren…</p>
+        <form id="private-login" class="private-login" hidden>
+          <label for="private-name">Naam</label><input id="private-name" name="user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Glenn of Karen" required maxlength="30">
+          <label for="private-password">Wachtwoord</label><input id="private-password" name="password" type="password" autocomplete="current-password" required maxlength="256">
+          <button class="button button-primary" type="submit">Aanmelden <span aria-hidden="true">→</span></button>
+        </form>
+        <div id="private-signed-in" hidden><p>Je kunt de privéplekken hieronder meteen openen.</p><button id="private-logout" class="button button-outline" type="button">Afmelden</button></div>
+        <noscript><p>Schakel JavaScript in om hier aan te melden, of <a class="text-link" href="https://recipes.dewilvis.be/">meld je aan via Recipes</a>.</p></noscript>
+      </section>
+    </div>
     <section class="private-grid" aria-label="Privéplekken">
       <a class="private-card private-card-recipes" href="https://recipes.dewilvis.be/"><span class="eyebrow">01 · Uit de keuken</span><h2>Recipes</h2><p>Onze recepten, verzameld en klaar voor een volgende keer aan tafel.</p><span class="text-link">Open de recepten <span aria-hidden="true">↗</span></span></a>
       <a class="private-card private-card-saver" href="https://saver.dewilvis.be/"><span class="eyebrow">02 · Ideeën die blijven</span><h2>Instagram Saver</h2><p>Vind je bewaarde Reels, notities en ontdekkingen op één plek terug.</p><span class="text-link">Open Saver <span aria-hidden="true">↗</span></span></a>

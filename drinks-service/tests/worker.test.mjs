@@ -86,6 +86,51 @@ test('writes reject missing CSRF and foreign origins including login', async () 
   assert.equal((await request('/api/drinks',{method:'POST',from:'https://evil.example',data:sample})).status,403);
   assert.equal((await request('/api/login',{method:'POST',from:'https://evil.example',data:{user:'glenn',password:'test-password'}})).status,403);
 });
+test('main website can preflight, sign in, restore and end a shared session', async () => {
+  for (const from of ['https://dewilvis.be','https://www.dewilvis.be']) {
+    for (const path of ['/api/login','/api/me','/api/logout']) {
+      const preflight = await request(path,{method:'OPTIONS',from,cookie:'',headers:{'Access-Control-Request-Method':path === '/api/me' ? 'GET' : 'POST','Access-Control-Request-Headers':'content-type,x-csrf-token'}});
+      assert.equal(preflight.status,204);
+      assert.equal(preflight.headers.get('Access-Control-Allow-Origin'),from);
+      assert.equal(preflight.headers.get('Access-Control-Allow-Credentials'),'true');
+      assert.match(preflight.headers.get('Access-Control-Allow-Headers'),/X-CSRF-Token/);
+    }
+    const login = await request('/api/login',{method:'POST',from,cookie:'',data:{user:'glenn',password:'test-password'}});
+    assert.equal(login.status,200);
+    assert.equal(login.headers.get('Access-Control-Allow-Origin'),from);
+    assert.equal(login.headers.get('Access-Control-Allow-Credentials'),'true');
+    assert.match(login.headers.get('Set-Cookie'),/Domain=dewilvis.be/);
+    const me = await request('/api/me',{from});
+    assert.equal(me.status,200);
+    assert.equal(me.headers.get('Access-Control-Allow-Origin'),from);
+    assert.deepEqual(await me.json(),{user:'glenn',csrf});
+    const logout = await request('/api/logout',{method:'POST',from,data:{}});
+    assert.equal(logout.status,200);
+    assert.equal(logout.headers.get('Access-Control-Allow-Credentials'),'true');
+    assert.match(logout.headers.get('Set-Cookie'),/Max-Age=0/);
+    const expired = await request('/api/me',{from,cookie:''});
+    assert.equal(expired.status,401);
+    assert.equal(expired.headers.get('Access-Control-Allow-Origin'),from);
+    assert.equal((await request('/api/logout',{method:'POST',from,token:'',data:{}})).status,403);
+  }
+});
+test('credentialed CORS never extends to foreign sites or drink editing', async () => {
+  for (const path of ['/api/login','/api/me','/api/logout']) {
+    const preflight = await request(path,{method:'OPTIONS',from:'https://evil.example',headers:{'Access-Control-Request-Method':'POST'}});
+    assert.equal(preflight.status,403);
+    assert.equal(preflight.headers.get('Access-Control-Allow-Origin'),null);
+  }
+  const preflight = await request('/api/drinks',{method:'OPTIONS',from:'https://dewilvis.be',headers:{'Access-Control-Request-Method':'POST'}});
+  assert.equal(preflight.status,403);
+  assert.equal(preflight.headers.get('Access-Control-Allow-Credentials'),null);
+  const write = await request('/api/drinks',{method:'POST',from:'https://dewilvis.be',data:sample});
+  assert.equal(write.status,403);
+  assert.equal(write.headers.get('Access-Control-Allow-Origin'),null);
+  const invalidMethod = await request('/api/login',{method:'OPTIONS',from:'https://dewilvis.be',headers:{'Access-Control-Request-Method':'DELETE'}});
+  assert.equal(invalidMethod.status,405);
+  const menu = await request('/api/menu',{from:'https://dewilvis.be'});
+  assert.equal(menu.headers.get('Access-Control-Allow-Credentials'),null);
+});
 test('add, edit, hide, restore and stale-write protection use real D1', async () => {
   const created = await request('/api/drinks',{method:'POST',data:sample});
   assert.equal(created.status,201);

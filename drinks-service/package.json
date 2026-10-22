@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "node --check src/worker.js && node --check public/manage/manage.js && node --check ../app.js",
+    "check": "node --check src/worker.js && node --check public/manage/manage.js && node --check ../app.js && node --check ../private.js",
     "test": "node --test tests/*.test.mjs",
     "dev": "npm run build && wrangler dev",
     "deploy:check": "npm run build && WRANGLER_LOG_PATH=.wrangler/logs/build.log wrangler deploy --dry-run"

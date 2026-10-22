@@ -321,6 +321,19 @@ body.menu-open { overflow: hidden; }
 
 /* Shared entry point for the authenticated household applications. */
 .private-main { padding-block: 140px 90px; }
+.private-welcome { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(300px,.8fr); align-items: center; gap: clamp(32px,6vw,80px); margin-bottom: 48px; }
+.private-welcome .private-intro { margin-bottom: 0; }
+.private-auth { padding: clamp(24px,3vw,36px); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--white); box-shadow: 0 12px 36px rgba(8,47,74,.06); }
+.private-auth h2 { font-size: clamp(1.6rem,3vw,2.2rem); line-height: 1.15; margin: 0 0 16px; }
+.private-auth [hidden] { display: none !important; }
+.private-auth-message { font-size: var(--step--1); line-height: 1.5; margin-bottom: 24px; }
+.private-auth-message.error { color: #972b30; }
+.private-login { display: grid; gap: 10px; }
+.private-login label { font-size: var(--step--1); font-weight: 650; }
+.private-login input { width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid rgba(8,47,74,.28); border-radius: 12px; color: var(--ink); background: white; }
+.private-login input + label { margin-top: 8px; }
+.private-login .button { margin-top: 12px; }
+.private-auth button:disabled { cursor: wait; opacity: .6; }
 .private-intro { max-width: 700px; margin-bottom: 48px; }
 .private-intro h1 { font-size: var(--step-3); line-height: 1.04; margin-block: 18px 26px; }
 .private-intro .private-access { font-size: var(--step--1); opacity: .75; max-width: 58ch; margin-top: 22px; }
@@ -334,6 +347,7 @@ body.menu-open { overflow: hidden; }
 .private-card-saver { background: var(--mint); }
 .private-card-drinks { background: var(--butter); }
 @media(max-width: 760px) { .private-grid { grid-template-columns: 1fr; } .private-intro { margin-bottom: 32px; } }
+@media(max-width: 760px) { .private-welcome { grid-template-columns: 1fr; margin-bottom: 32px; } }
 @media(prefers-reduced-motion: reduce) { .private-card { transition: none; } .private-card:hover { transform: none; } }
 
 #deviskar { scroll-margin-top: 110px; }

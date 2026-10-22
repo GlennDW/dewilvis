@@ -5,7 +5,7 @@ An independently deployable Cloudflare Worker for the public drinks menu and its
 ## Architecture
 
 - Public menu: `https://drinks.dewilvis.be/drinks.html` (the root redirects here).
-- Private hub: `https://dewilvis.be/private.html` links Recipes, Saver and drinks management; each application enforces its own authenticated access.
+- Private hub: `https://dewilvis.be/private.html` provides a shared sign-in form and links Recipes, Saver and drinks management; each application enforces its own authenticated access. The form uses the existing Recipes authentication authority through the drinks service, with credentialed CORS restricted to the two main website origins and the drinks origin. Only `/api/login`, `/api/me` and `/api/logout` allow this; drink edits retain their same-origin checks. No password or session token is stored in browser storage.
 - Management: `https://drinks.dewilvis.be/manage/`.
 - Cloudflare D1 database `dewilvis-drinks` stores categories and drink availability, names and descriptions. Both Glenn and Karen edit the same household menu.
 - The `AUTH_SERVICE` service binding calls the existing `recipe-keeper` Worker. Password validation, login rate limits, sessions and logout remain owned by Recipes. The existing `dw_session` HttpOnly cookie covers `dewilvis.be` and its subdomains. Existing shared Recipes/Saver sessions work here too; older host-only Recipes sessions require signing in once on this site.
