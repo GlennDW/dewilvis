@@ -58,7 +58,7 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .search-band{background:var(--navy);border-radius:var(--r1);padding:36px 24px 40px;text-align:center;color:#fff}
 .search-band .lens{width:92px;height:92px;border-radius:50%;background:#4f6a79;display:grid;place-items:center;margin:0 auto 14px;border:1px solid #8ba1ad}
 .search-band .lens svg{width:44px;height:44px;stroke-width:2.4}
-.search-band h2{font-size:38px;font-weight:600;margin-bottom:22px}
+.search-band h2,.search-band h1{font-size:38px;font-weight:600;margin-bottom:22px}
 .search-band p{margin-bottom:24px}
 .search-band .sb{max-width:830px;margin:0 auto}
 .sect{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin:22px 0 10px}
@@ -83,7 +83,7 @@ footer{border-top:1px solid var(--g200);padding:24px 40px;font-size:13px;color:v
 .sbar svg.lead,.ovf svg.lead{color:var(--label)}
 .sep{width:1px;align-self:stretch;margin:8px 0;background:var(--g200)}
 .tag{display:inline-flex;align-items:center;gap:6px;background:var(--teal-20);color:var(--teal-ink);border-radius:var(--r3);padding:4px 6px 4px 10px;font-size:15px;white-space:nowrap}
-.tag button{border:0;background:none;display:grid;padding:2px;color:inherit;min-width:24px;min-height:24px;place-items:center}
+.tag button{border:0;background:none;display:grid;padding:2px;color:inherit;min-width:32px;min-height:32px;place-items:center}
 .km{background:var(--teal-20);color:var(--teal-ink);border:0;border-radius:var(--r3);padding:6px 10px;font-size:14px;min-height:36px;white-space:nowrap}
 .sbar .go{min-height:44px;margin-left:6px}
 .sug{position:absolute;left:0;right:0;top:calc(100% + 8px);background:#fff;border-radius:var(--r1);box-shadow:0 8px 30px rgba(0,0,0,.18);z-index:40;padding:8px;max-height:380px;overflow:auto;color:var(--navy);text-align:left}
@@ -219,7 +219,8 @@ h1.count{font-size:24px;margin:16px 0 14px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:var(--r2);z-index:300;box-shadow:0 6px 24px rgba(0,0,0,.3);font-size:14px}
 .sk{height:200px;border-radius:var(--r1);margin-bottom:14px;background:linear-gradient(90deg,#e9edef 25%,#f6f8f9 37%,#e9edef 63%);background-size:400% 100%;animation:sh 1.2s infinite}
 @keyframes sh{0%{background-position:100% 50%}100%{background-position:0 50%}}
-@media (prefers-reduced-motion:reduce){.sk{animation:none}}
+@media (prefers-reduced-motion:reduce){.sk{animation:none}.cdots i{transition:none}}
+main:focus{outline:none}
 .proto{position:fixed;left:12px;bottom:12px;z-index:45;background:#fff;border-radius:var(--r2);box-shadow:0 4px 18px rgba(0,0,0,.2);padding:4px 10px;font-size:12px;color:var(--label)}
 .proto summary{cursor:pointer;min-height:32px;display:flex;align-items:center}
 .proto label{display:block;margin-top:4px}
@@ -302,7 +303,7 @@ h1.count{font-size:24px;margin:16px 0 14px}
   .band{padding:0 8px}
   .search-band{background:none;color:var(--navy);padding:24px 0 8px}
   .search-band .lens,.search-band p{display:none}
-  .search-band h2{font-size:24px;margin-bottom:14px}
+  .search-band h2,.search-band h1{font-size:24px;margin-bottom:14px}
   .sbar.hero{display:block;border:0;box-shadow:var(--shadow);padding:4px}
   .sbar.hero .f+.f{border-top:1px solid var(--g200);border-radius:0 0 var(--r2) var(--r2)}
   .sbar.hero .go,.sbar.hero .sep{display:none}
@@ -331,6 +332,7 @@ h1.count{font-size:24px;margin:16px 0 14px}
 <div id="app"></div>
 <div id="layer"></div>
 <div id="mlayer"></div>
+<div id="sugst" class="sr" role="status" aria-live="polite"></div>
 <script>
 /* ---------- icons ---------- */
 const P={search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',nav:'<path d="M3 11l18-8-8 18-2-8z"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',chev:'<path d="M6 9l6 6 6-6"/>',chevu:'<path d="M6 15l6-6 6 6"/>',chevr:'<path d="M9 6l6 6-6 6"/>',back:'<path d="M15 6l-6 6 6 6"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',bm:'<path d="M6 3h12v18l-6-4-6 4z"/>',check:'<path d="M5 12l5 5 9-10"/>',cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',bld:'<path d="M5 21V4h9v17M14 9h5v12M3 21h18M8 8h2M8 12h2M8 16h2"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',sliders:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/>',list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/>',steth:'<path d="M6 3v6a4 4 0 008 0V3M10 13v2a5 5 0 0010 0v-2"/><circle cx="20" cy="11" r="2"/>',menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5L16 9.5"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',gym:'<path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/>',tooth:'<path d="M7 4c-3 0-4 3-3 6s1 5 2 9c.4 1.6 1.6 1.6 2-.5.4-2 .8-4 3-4s2.6 2 3 4c.4 2 1.6 2 2 .5 1-4 1-6 2-9s-.1-6-3-6c-2 0-3 1-5 1S9 4 7 4z"/>',run:'<circle cx="14" cy="4.5" r="2"/><path d="M8 21l3-6-3-3 3-4 4 3 3 1M11 8l-4 2"/>',brain:'<path d="M12 4v16M8 5a3 3 0 00-3 3 3 3 0 00-1 5 3 3 0 003 4 3 3 0 005 1V4a3 3 0 00-4 1zM16 5a3 3 0 013 3 3 3 0 011 5 3 3 0 01-3 4 3 3 0 01-5 1"/>',carrot:'<path d="M20 4c-3 0-5 2-5 4l-9 9c-1 1 0 3 1 3l9-9c2 0 4-2 4-5zM4 20l2-2"/>',dots:'<path d="M6 12h.01M12 12h.01M18 12h.01" stroke-width="3"/>'};
@@ -376,6 +378,7 @@ const MN=['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec
 const DN=['zo','ma','di','wo','do','vr','za'];
 const DNL=['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
 const MNL=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+const SM=()=>matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
 const addD=o=>{const d=new Date(TODAY);d.setDate(d.getDate()+o);return d};
 const dlabel=o=>o===0?'Vandaag':o===1?'Morgen':`${addD(o).getDate()} ${MN[addD(o).getMonth()]}`;
 const kmf=k=>k.toString().replace('.',',');
@@ -437,12 +440,12 @@ function searchBar(hero){
   return `<form class="sbar ${hero?'hero':''}" role="search" aria-label="Zoek een zorgverlener">
   <div class="f" data-field="q">${I('search','lead')}
     ${s?`<span class="tag">${s.l}${subL()?' • '+subL():''}<button type="button" data-a="clrspec" aria-label="Verwijder specialisme ${s.l}">${I('x')}</button></span>`:''}
-    <input id="q" autocomplete="off" aria-label="Zorgverlener, specialisme of praktijk" placeholder="${s?'Naam of praktijk':'Zoek een zorgverlener, specialisme of praktijk'}" value="${S.q.replace(/"/g,'&quot;')}" data-fi="q" ${ro}>
+    <input id="q" autocomplete="off" aria-label="Zorgverlener, specialisme of praktijk" placeholder="${s?'Naam of praktijk':'Zoek een zorgverlener, specialisme of praktijk'}" value="${S.q.replace(/"/g,'&quot;')}" data-fi="q" ${ro} ${mob()?'aria-haspopup="dialog"':''}>
     ${S.q?`<button type="button" class="clr" data-a="clrq" aria-label="Wis getypte tekst">${I('x')}</button>`:''}</div>
   <span class="sep" aria-hidden="true"></span>
   <div class="f" data-field="loc">${I('nav','lead')}
-    <input id="loc" autocomplete="off" aria-label="Locatie" placeholder="Stad, postcode of adres" value="${S.loc.replace(/"/g,'&quot;')}" data-fi="loc" ${ro}>
-    ${S.locOn?`<button type="button" class="clr" data-a="clrloc" aria-label="Wis locatie">${I('x')}</button><button type="button" class="km" data-a="radpop" aria-haspopup="dialog" aria-expanded="${S.radOpen}">${S.radius} km</button>`:''}
+    <input id="loc" autocomplete="off" aria-label="Locatie" placeholder="Stad, postcode of adres" value="${S.loc.replace(/"/g,'&quot;')}" data-fi="loc" ${ro} ${mob()?'aria-haspopup="dialog"':''}>
+    ${S.locOn?`<button type="button" class="clr" data-a="clrloc" aria-label="Wis locatie">${I('x')}</button><button type="button" class="km" data-a="radpop" aria-label="Straal wijzigen, nu ${S.radius} kilometer" aria-haspopup="dialog" aria-expanded="${S.radOpen}">${S.radius} km</button>`:''}
     ${S.radOpen&&!mob()?`<div class="radpop" role="dialog" aria-label="Straal instellen">${radiusCard()}</div>`:''}</div>
   <button class="btn go" type="submit">${I('search')}<span>Zoeken</span></button></form>`}
 function miniBar(){
@@ -473,10 +476,10 @@ function sugHTML(kind,txt){
 function openSug(kind){
   closeSug();if(mob())return;
   const f=document.querySelector(`[data-field="${kind}"]`);if(!f)return;
-  const el=document.createElement('div');el.className='sug '+(kind==='loc'?'locsug':'');el.id='sug';el.dataset.kind=kind;
+  const el=document.createElement('div');el.className='sug '+(kind==='loc'?'locsug':'');el.id='sug';el.dataset.kind=kind;el.setAttribute('role','group');el.setAttribute('aria-label',kind==='q'?'Suggesties voor zorgverlener of specialisme':'Suggesties voor locatie');
   el.innerHTML=sugHTML(kind,kind==='q'?S.q:'');f.appendChild(el);
 }
-function closeSug(){const e=$('#sug');if(e)e.remove()}
+function closeSug(){const e=$('#sug');if(e)e.remove();const st=$('#sugst');if(st)st.textContent=''}
 
 /* mobile search overlay */
 function ovHTML(){
@@ -484,16 +487,16 @@ function ovHTML(){
   return `<div class="ovtop"><button class="ib" data-a="ovclose" aria-label="Terug" style="margin-top:4px">${I('back')}</button>
    <div class="ovfs"><div class="ovf ${OV.active==='q'?'on':''}">${I('search','lead')}${s?`<span class="tag">${s.l}${subL()?' • '+subL():''}<button type="button" data-a="clrspec" aria-label="Verwijder specialisme ${s.l}">${I('x')}</button></span>`:''}
      <input id="ovq" autocomplete="off" aria-label="Zorgverlener, specialisme of praktijk" placeholder="${s?'Naam of praktijk':'Zorgverlener, specialisme of praktijk'}" value="${S.q.replace(/"/g,'&quot;')}" data-ov="q">${S.q?`<button class="clr" data-a="clrq" aria-label="Wis getypte tekst">${I('x')}</button>`:''}</div>
-    <div class="ovf ${OV.active==='loc'?'on':''}">${I('nav','lead')}<input id="ovl" autocomplete="street-address" aria-label="Locatie" placeholder="Stad, postcode of adres" value="${(OV.draft||S.loc).replace(/"/g,'&quot;')}" data-ov="loc">${S.locOn?`<button class="clr" data-a="clrloc" aria-label="Wis locatie">${I('x')}</button><button class="km" data-a="radpop" aria-expanded="${S.radOpen}">${S.radius} km</button>`:''}</div></div></div>
-   <div class="ovbody" id="ovbody">${S.radOpen&&OV.active==='loc'?`<div class="radwrap">${radiusCard()}</div>`:sugHTML(OV.active,OV.active==='q'?S.q:OV.draft)}</div>
+    <div class="ovf ${OV.active==='loc'?'on':''}">${I('nav','lead')}<input id="ovl" autocomplete="street-address" aria-label="Locatie" placeholder="Stad, postcode of adres" value="${(OV.draft||S.loc).replace(/"/g,'&quot;')}" data-ov="loc">${S.locOn?`<button class="clr" data-a="clrloc" aria-label="Wis locatie">${I('x')}</button><button class="km" data-a="radpop" aria-label="Straal wijzigen, nu ${S.radius} kilometer" aria-expanded="${S.radOpen}">${S.radius} km</button>`:''}</div></div></div>
+   <div class="ovbody" id="ovbody" role="group" aria-label="Suggesties">${S.radOpen&&OV.active==='loc'?`<div class="radwrap">${radiusCard()}</div>`:sugHTML(OV.active,OV.active==='q'?S.q:OV.draft)}</div>
    <div class="ovfoot"><button class="btn wide" data-a="ovgo">Zoeken</button></div>`}
 function openOv(active){
-  closeSug();OV.on=true;OV.active=active;OV.draft='';S.radOpen=false;
+  closeSug();if(!OV.on)OV.opener=document.activeElement;OV.on=true;OV.active=active;OV.draft='';S.radOpen=false;$('#app').inert=true;
   let el=$('#ov');if(!el){el=document.createElement('div');el.id='ov';el.className='ov';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Zoeken');document.body.appendChild(el)}
   el.innerHTML=ovHTML();document.body.style.overflow='hidden';$(active==='q'?'#ovq':'#ovl').focus();
 }
 function ovRender(focus){const el=$('#ov');if(!el)return;el.innerHTML=ovHTML();if(focus!==false)$(OV.active==='q'?'#ovq':'#ovl')?.focus()}
-function closeOv(){OV.on=false;S.radOpen=false;$('#ov')?.remove();document.body.style.overflow=S.mapOpen&&mob()?'hidden':''}
+function closeOv(){const was=OV.on;OV.on=false;S.radOpen=false;$('#ov')?.remove();const ap=$('#app');if(ap)ap.inert=false;document.body.style.overflow=S.mapOpen&&mob()?'hidden':'';const o=OV.opener;OV.opener=null;if(was&&o&&o.isConnected&&o!==document.body)o.focus?.()}
 function afterSpec(){if(S.locOn){launch()}else if(OV.on){OV.active='loc';ovRender()}else{render();if(mob())openOv('loc');else $('#loc')?.focus()}}
 function afterLoc(){if(!S.q.trim()&&!S.spec){closeSug();S.radOpen=false;if(OV.on){OV.active='q';ovRender()}else{render();$('#q')?.focus()}}else launch()}
 function launch(){closeSug();closeOv();S.radOpen=false;S.loading=true;S.hide=false;go('results');setTimeout(()=>{S.loading=false;if(route==='results')render()},400)}
@@ -505,11 +508,11 @@ function addrTabs(c,ai){
   return c.ad.length>1?`<div class="atabs" role="group" aria-label="Locaties van ${c.n}"><button class="pinb" data-a="locs:${c.id}" aria-label="Alle locaties op de kaart">${I('pin')}</button>${c.ad.map((x,i)=>`<button class="chip ${i===ai?'sel':''}" aria-pressed="${i===ai}" data-a="atab:${c.id}:${i}">${x.l}</button>`).join('')}</div>`:'';
 }
 function addrLines(c,a){
-  return `<div class="al"><a class="pl" href="#" data-a="c:${c.id}">${I('bld')}<span>${c.prac}</span></a><p class="ad">${I('pin')}<span>${a.st}${S.locOn?` • <b>${kmf(a.km)} km</b>`:''} • <a href="#" data-a="mapfor:${c.id}">Kaart</a></span></p></div>`}
+  return `<div class="al"><a class="pl" href="#/c/${c.id}" data-a="c:${c.id}">${I('bld')}<span>${c.prac}</span></a><p class="ad">${I('pin')}<span>${a.st}${S.locOn?` • <b>${kmf(a.km)} km</b>`:''} • <button type="button" class="lnk" data-a="mapfor:${c.id}">Kaart</button></span></p></div>`}
 function dayStrip(c,ai,sel){
-  const a=c.ad[ai];let h='';
+  const a=c.ad[ai],tab=sel??firstDay(c,a);let h='';
   for(let o=0;o<28;o++){const d=addD(o),n=dayTimes(c,a,o).length;
-    h+=`<button class="dy ${n?'':'off'}" ${n?'':'aria-disabled="true"'} aria-label="${DNL[d.getDay()]} ${d.getDate()} ${MNL[d.getMonth()]}, ${n?n+' uren beschikbaar':'niet beschikbaar'}" aria-pressed="${sel===o}" data-a="day:${c.id}:${ai}:${o}"><small>${DN[d.getDay()]}</small><b>${d.getDate()}</b></button>`}
+    h+=`<button class="dy ${n?'':'off'}" tabindex="${o===tab?0:-1}" ${n?'':'aria-disabled="true"'} aria-label="${DNL[d.getDay()]} ${d.getDate()} ${MNL[d.getMonth()]}, ${n?n+' tijdstippen beschikbaar':'niet beschikbaar'}" aria-pressed="${sel===o}" data-a="day:${c.id}:${ai}:${o}"><small>${DN[d.getDay()]}</small><b>${d.getDate()}</b></button>`}
   return h}
 function weekBlock(c,ai,dp){
   const a=c.ad[ai],fd=firstDay(c,a);
@@ -526,7 +529,7 @@ function availBlock(c,ai,forceChips){
   if(c.bk==='web')return `<p style="margin-bottom:12px">Boeken gaat verder op de eigen site van de zorgverlener.</p><a class="btn ghost wide" href="#" data-a="toast:Dit opent de website van de zorgverlener (niet beschikbaar in het prototype)">Ga naar de website ${I('arrow')}<span class="sr"> (opent in een nieuw tabblad)</span></a>`;
   if(c.bk==='phone')return `<p style="margin-bottom:12px">Geen online afspraken mogelijk. Maak een afspraak telefonisch.</p><a class="btn ghost wide" href="tel:${a.ph.replace(/ /g,'')}">${I('phone')}${a.ph}</a>`;
   const t=atype(c.id);
-  return `<div class="avh"><span class="ah">${I('cal')}Eerstvolgende beschikbaarheid</span><a class="seeall" href="#" data-a="book2:${c.id}:${ai}">Zie alles</a></div>
+  return `<div class="avh"><span class="ah">${I('cal')}Eerstvolgende beschikbaarheid</span><button type="button" class="lnk seeall" data-a="book2:${c.id}:${ai}">Zie alles</button></div>
    <button class="typebtn" data-a="atype:${c.id}" aria-haspopup="dialog">${t.n} (${t.min} min) ${I('chevr')}</button>
    ${(S.cv==='chips'&&!forceChips)?chipBlock(c,ai):weekBlock(c,ai,forceChips)}`;
 }
@@ -534,14 +537,14 @@ function aboutText(c){const o=S.exp.has(c.id);return `${o?LOREM:LOREM.slice(0,13
 function cardView(c){
   const ai=S.atab[c.id]||0,a=c.ad[ai];
   return `<article class="card ${S.hl===c.id?'hl':''}" id="c-${c.id}" aria-label="${c.n}">
-  <div class="lc"><div class="who">${av(c)}<div class="nm"><h2><a href="#" data-a="c:${c.id}">${c.n}</a>${verified}</h2><div class="sub">${sp(c.sp).l}</div></div>${saveBtn(c)}</div>
+  <div class="lc"><div class="who">${av(c)}<div class="nm"><h2><a href="#/c/${c.id}" data-a="c:${c.id}">${c.n}</a>${verified}</h2><div class="sub">${sp(c.sp).l}</div></div>${saveBtn(c)}</div>
    <div class="tags"><span class="tg">${c.conv}</span><span class="tg">${c.langs.join(' • ')}</span>${c.np?`<span class="tg">${I('check')}Neemt nieuwe patiënten aan</span>`:`<span class="tg">Geen nieuwe patiënten</span>`}</div>
    <p class="about">${aboutText(c)}</p></div>
   <div class="rc">${addrTabs(c,ai)}${addrLines(c,a)}<div class="panel">${availBlock(c,ai)}</div></div></article>`;
 }
 function mobCard(c,forceChips){
   const ai=S.atab[c.id]||0,a=c.ad[ai];
-  return `<article class="card" id="c-${c.id}" aria-label="${c.n}"><div class="lc" style="padding-bottom:4px"><div class="who">${av(c)}<div class="nm"><h2><a href="#" data-a="c:${c.id}">${c.n}</a>${verified}</h2><div class="sub">${sp(c.sp).l}</div></div>${saveBtn(c)}</div></div>
+  return `<article class="card" id="c-${c.id}" aria-label="${c.n}"><div class="lc" style="padding-bottom:4px"><div class="who">${av(c)}<div class="nm"><h2><a href="#/c/${c.id}" data-a="c:${c.id}">${c.n}</a>${verified}</h2><div class="sub">${sp(c.sp).l}</div></div>${saveBtn(c)}</div></div>
    <div class="rc">${addrTabs(c,ai)}${addrLines(c,a)}<div class="panel">${availBlock(c,ai,forceChips)}</div></div></article>`;
 }
 function refreshCard(id,focusSel){
@@ -555,7 +558,7 @@ function refreshCard(id,focusSel){
 function centerStrips(root){(root||document).querySelectorAll('.dys').forEach(d=>{const b=d.querySelector('[aria-pressed=true]');if(b)d.scrollLeft=b.offsetLeft-d.clientWidth/2+b.offsetWidth/2})}
 
 /* practice card with three practitioner patterns */
-function prac(m){const mem=m,open=S.pav[mem.id];return `<div class="prow"><div class="av" style="background:linear-gradient(135deg,hsl(${mem.hue} 40% 36%),hsl(${mem.hue+30} 45% 48%))" aria-hidden="true">${mem.n.replace('Dr. ','').split(' ').map(w=>w[0]).join('').slice(0,2)}</div><div class="pn"><a href="#" data-a="c:${mem.id}">${mem.n}</a><div class="muted" style="font-size:13px">${sp(mem.sp).l}</div></div><button class="ib" style="color:var(--teal-btn)" data-a="pav:${mem.id}" aria-expanded="${!!open}" aria-label="${open?'Verberg':'Toon'} beschikbaarheid van ${mem.n}">${I(open?'chevu':'chev')}</button></div>${open?`<div class="pblock">${chipBlock(mem,0)}</div>`:''}`}
+function prac(m){const mem=m,open=S.pav[mem.id];return `<div class="prow"><div class="av" style="background:linear-gradient(135deg,hsl(${mem.hue} 40% 36%),hsl(${mem.hue+30} 45% 48%))" aria-hidden="true">${mem.n.replace('Dr. ','').split(' ').map(w=>w[0]).join('').slice(0,2)}</div><div class="pn"><a href="#/c/${mem.id}" data-a="c:${mem.id}">${mem.n}</a><div class="muted" style="font-size:13px">${sp(mem.sp).l}</div></div><button class="ib" style="color:var(--teal-btn)" data-a="pav:${mem.id}" aria-expanded="${!!open}" aria-label="${open?'Verberg':'Toon'} beschikbaarheid van ${mem.n}">${I(open?'chevu':'chev')}</button></div>${open?`<div class="pblock">${chipBlock(mem,0)}</div>`:''}`}
 function practiceCard(){
   const mem=PRACTICE.mem.map(byId),o=S.pexp.rooms,v='avatars';
   let body='';
@@ -583,7 +586,7 @@ function homeView(){
   return `${header()}
   <section class="home-hero"><div><h1>Je medische data in jouw handen</h1><p>Helena geeft je toegang tot je medische gegevens en helpt je om veilig, persoonlijk en eenvoudig te communiceren met je zorgverleners.</p><button class="btn" data-a="toast:Aanmelden is niet beschikbaar in dit prototype">Gratis aanmelden</button></div><div class="mock" aria-hidden="true"><b></b><i></i><i></i><i></i><i></i><i></i></div></section>
   <main id="main" class="band"><section class="search-band" aria-labelledby="sh"><div class="lens" aria-hidden="true">${I('search')}</div>
-   <h2 id="sh">Vind een zorgverlener voor jou</h2><p>Zoek op naam, specialisme of praktijk. Je hebt geen account nodig.</p>
+   <${mob()?'h1':'h2'} id="sh">Vind een zorgverlener voor jou</${mob()?'h1':'h2'}><p>Zoek op naam, specialisme of praktijk. Je hebt geen account nodig.</p>
    <div class="sb">${searchBar(true)}<button class="btn mgo" data-a="launch">Zoeken</button></div>
    <div class="sect">Populaire specialismen</div><div class="chips">${SPEC.map(s=>`<button class="chip" data-a="pickspec:${s.k}">${s.l}</button>`).join('')}</div>
    <div class="sect">Probeer bijvoorbeeld</div><div class="chips">${[['huisarts','Huisarts in Gent','Gent'],['kine','Kine in Gent','Gent'],['dietist','Diëtist in Brussel','Brussel']].map(e=>`<button class="chip" data-a="ex:${e[0]}:${e[2]}">${I('search')}${e[1]}</button>`).join('')}</div></section>
@@ -617,7 +620,7 @@ function resultsView(){
 function mapScreen(list,noun){
   if(!S.hl||!list.find(c=>c.id===S.hl))S.hl=list[0]?.id||null;
   const idx=Math.max(0,list.findIndex(c=>c.id===S.hl));
-  return `<main id="main" class="mapfull"><div class="mapbox" id="dmap">${mapSVG(list,true)}</div>
+  return `<main id="main" class="mapfull"><h1 class="sr">Kaartweergave: ${list.length} ${noun}</h1><div class="mapbox" id="dmap">${mapSVG(list,true)}</div>
   <div class="top">${miniBar()}</div>
   <div class="msheet"><div class="mh"><div class="mhl"><b>${list.length} ${noun}</b><button class="chip" data-a="mapclose">Toon lijst ${I('list')}</button></div>${list.length>1?`<div class="arrows"><button data-a="cnav:-1" aria-label="Vorige zorgverlener">${I('back')}</button><button data-a="cnav:1" aria-label="Volgende zorgverlener">${I('chevr')}</button></div>`:''}</div>
    <div class="carousel" id="car" role="region" aria-roledescription="carousel" aria-label="Zorgverleners op de kaart">${list.map((c,i)=>`<div class="cs" role="group" aria-roledescription="slide" aria-label="${i+1} van ${list.length}" data-id="${c.id}">${mobCard(c,true)}</div>`).join('')}</div>
@@ -649,12 +652,12 @@ function bookView(c){
   let inner='';
   if(b.step===1)inner=`<h2>Kies een soort afspraak</h2><div class="ty">${APPT.map((x,i)=>`<label><input type="radio" name="bt" ${i===b.type?'checked':''} data-a="bset:type:${i}">${x.n} (${x.min} min)</label>`).join('')}</div><button class="btn" data-a="bnext">Verder ${I('arrow')}</button>`;
   if(b.step===2){const tm=b.day!==null?dayTimes(c,a,b.day):[];
-   inner=`<h2>Kies dag en uur</h2><p class="muted" style="margin-bottom:8px">${t.n} (${t.min} min) • <a href="#" data-a="bgo:1">Wijzig</a></p><div class="dys" role="group" aria-label="Kies een dag" id="bdys">${(()=>{let h='';for(let o=0;o<28;o++){const d=addD(o),n=dayTimes(c,a,o).length;h+=`<button class="dy ${n?'':'off'}" ${n?'':'aria-disabled="true"'} aria-label="${DNL[d.getDay()]} ${d.getDate()} ${MNL[d.getMonth()]}, ${n?n+' uren beschikbaar':'niet beschikbaar'}" aria-pressed="${b.day===o}" data-a="bset:day:${o}"><small>${DN[d.getDay()]}</small><b>${d.getDate()}</b></button>`}return h})()}</div>
+   inner=`<h2>Kies dag en uur</h2><p class="muted" style="margin-bottom:8px">${t.n} (${t.min} min) • <button type="button" class="lnk" data-a="bgo:1">Wijzig</button></p><div class="dys" role="group" aria-label="Kies een dag" id="bdys">${(()=>{let h='';for(let o=0;o<28;o++){const d=addD(o),n=dayTimes(c,a,o).length;h+=`<button class="dy ${n?'':'off'}" ${n?'':'aria-disabled="true"'} aria-label="${DNL[d.getDay()]} ${d.getDate()} ${MNL[d.getMonth()]}, ${n?n+' tijdstippen beschikbaar':'niet beschikbaar'}" aria-pressed="${b.day===o}" data-a="bset:day:${o}"><small>${DN[d.getDay()]}</small><b>${d.getDate()}</b></button>`}return h})()}</div>
    ${b.day!==null?`<div class="tms" style="grid-template-columns:repeat(auto-fill,minmax(88px,1fr))" role="group" aria-label="Uren">${tm.map(x=>`<button class="tm" aria-pressed="${b.time===x}" style="${b.time===x?'background:var(--teal-btn);color:#fff':''}" data-a="bset:time:${x}">${x}</button>`).join('')}</div>`:`<p class="muted">Kies eerst een dag.</p>`}
    <div style="display:flex;gap:10px;margin-top:20px"><button class="btn ghost" data-a="bprev">Terug</button><button class="btn" ${b.day!==null&&b.time?'':'disabled'} data-a="bnext">Verder ${I('arrow')}</button></div>`}
-  if(b.step===3)inner=`<h2>Jouw gegevens</h2><div class="sum"><div><b>${c.n}</b> • ${a.st}</div><div>${t.n} (${t.min} min) • ${dlabel(b.day)} om ${b.time} <a href="#" data-a="bgo:2">Wijzig</a></div></div>
-   <div class="fld"><label for="bn">Naam</label><input id="bn" type="text" data-bind="name" value="${b.name}" autocomplete="name" ${b.err?.name?'aria-invalid="true"':''}>${b.err?.name?`<span class="err" role="alert">${b.err.name}</span>`:''}</div>
-   <div class="fld"><label for="be">E-mailadres</label><input id="be" type="email" data-bind="email" value="${b.email}" autocomplete="email" ${b.err?.email?'aria-invalid="true"':''}>${b.err?.email?`<span class="err" role="alert">${b.err.email}</span>`:''}</div>
+  if(b.step===3)inner=`<h2>Jouw gegevens</h2><div class="sum"><div><b>${c.n}</b> • ${a.st}</div><div>${t.n} (${t.min} min) • ${dlabel(b.day)} om ${b.time} <button type="button" class="lnk" data-a="bgo:2">Wijzig</button></div></div>
+   <div class="fld"><label for="bn">Naam</label><input id="bn" type="text" data-bind="name" value="${b.name}" autocomplete="name" ${b.err?.name?'aria-invalid="true" aria-describedby="bn-e"':''}>${b.err?.name?`<span class="err" id="bn-e" role="alert">${b.err.name}</span>`:''}</div>
+   <div class="fld"><label for="be">E-mailadres</label><input id="be" type="email" data-bind="email" value="${b.email}" autocomplete="email" ${b.err?.email?'aria-invalid="true" aria-describedby="be-e"':''}>${b.err?.email?`<span class="err" id="be-e" role="alert">${b.err.email}</span>`:''}</div>
    <div class="fld"><label for="bp">Telefoon (optioneel)</label><input id="bp" type="tel" data-bind="phone" value="${b.phone}" autocomplete="tel"></div>
    <fieldset style="border:0;padding:0;margin:0 0 14px"><legend style="font-size:14px;font-weight:500;color:var(--label);margin-bottom:6px">Ben je al patiënt bij deze zorgverlener?</legend><div style="display:flex;gap:18px"><label style="display:flex;gap:8px;align-items:center"><input type="radio" name="kn" ${b.known==='ja'?'checked':''} data-a="bset:known:ja">Ja</label><label style="display:flex;gap:8px;align-items:center"><input type="radio" name="kn" ${b.known==='nee'?'checked':''} data-a="bset:known:nee">Nee</label></div></fieldset>
    ${b.known==='nee'&&!c.np?`<div class="note">${I('info')}<div>Deze zorgverlener neemt momenteel geen nieuwe patiënten aan. Bel de praktijk op ${a.ph}.</div></div>`:''}
@@ -698,7 +701,7 @@ function typeModal(id){layer(`<div class="scrim" data-scrim><div class="modal" r
 function locsModal(id){const c=byId(id),sel=S.atab[id]||0;layer(`<div class="scrim" data-scrim><div class="modal" role="dialog" aria-modal="true" aria-labelledby="lh" style="max-width:480px"><div class="mh2"><h2 id="lh">Locaties van ${c.n}</h2><button class="ib" data-a="lclose" aria-label="Sluiten" style="color:var(--navy)">${I('x')}</button></div>
   <div class="locmap">${locMapSVG(c,sel)}</div>${c.ad.map((x,i)=>`<button class="loc" data-a="lgo:${id}:${i}" ${i===sel?'data-autofocus aria-current="true"':''}><span><b>${i+1}. ${x.l}</b><small>${x.st}</small></span>${S.locOn?`<span class="km">${kmf(x.km)} km</span>`:''}</button>`).join('')}</div></div>`,document.activeElement)}
 function savedPanel(opener){const l=CG.filter(c=>S.saved.has(c.id));layer(`<div class="scrim dr" data-scrim><div class="modal drawer" role="dialog" aria-modal="true" aria-labelledby="sh2"><div class="mh2"><h2 id="sh2">Bewaard (${l.length})</h2><button class="ib" data-a="lclose" aria-label="Sluiten" style="color:var(--navy)" data-autofocus>${I('x')}</button></div>
-  ${l.length?l.map(c=>`<div class="prow" style="box-shadow:var(--shadow);margin-bottom:8px">${av(c)}<div class="pn"><a href="#" data-a="c:${c.id}">${c.n}</a><div class="muted" style="font-size:13px">${sp(c.sp).l} • ${c.prac}</div></div><button class="ib" style="color:var(--navy)" data-a="srem:${c.id}" aria-label="Verwijder ${c.n} uit bewaard">${I('x')}</button></div>`).join(''):`<p class="muted" style="padding:12px 0">Je hebt nog geen zorgverleners bewaard. Gebruik het bladwijzer-icoon op een kaart.</p>`}</div></div>`,opener)}
+  ${l.length?l.map(c=>`<div class="prow" style="box-shadow:var(--shadow);margin-bottom:8px">${av(c)}<div class="pn"><a href="#/c/${c.id}" data-a="c:${c.id}">${c.n}</a><div class="muted" style="font-size:13px">${sp(c.sp).l} • ${c.prac}</div></div><button class="ib" style="color:var(--navy)" data-a="srem:${c.id}" aria-label="Verwijder ${c.n} uit bewaard">${I('x')}</button></div>`).join(''):`<p class="muted" style="padding:12px 0">Je hebt nog geen zorgverleners bewaard. Gebruik het bladwijzer-icoon op een kaart.</p>`}</div></div>`,opener)}
 function menuHTML(k){
   const f=S.f,chk=(g,v)=>`<label><input type="checkbox" data-f="${g}" value="${v}" ${f[g].includes(v)?'checked':''}>${v}</label>`;
   if(k==='avail')return [['any','Altijd'],['today','Vandaag'],['three','Binnen 3 dagen'],['week','Binnen een week']].map(o=>`<label><input type="radio" name="av" data-r="avail" value="${o[0]}" ${f.avail===o[0]?'checked':''}>${o[1]}</label>`).join('')+`<button class="btn ghost wide" style="margin-top:6px" data-a="calopen:m">${I('cal')}${f.avail==='range'?availLabel():'Kies een periode'}</button>`;
@@ -713,20 +716,26 @@ function closeMenu(){if(S.menu){S.menu=null;renderMenu();if(route==='results')re
 let route='home',routeId=null,lastMob=mob();
 function protoBar(){return `<details class="proto"><summary>Prototype-opties</summary><label for="cv">Kaartvariant</label><select id="cv" data-cv aria-label="Kaartvariant"><option value="week" ${S.cv==='week'?'selected':''}>Weekstrip met uren (gewenst)</option><option value="daypick" ${S.cv==='daypick'?'selected':''}>Weekstrip, uren na dagkeuze</option><option value="chips" ${S.cv==='chips'?'selected':''}>Eerstvolgende uren (chips)</option></select></details>`}
 function render(){
-  const y=scrollY;let h='';
+  const y=scrollY,hadMain=document.activeElement?.id==='main';let h='';
   if(route==='home')h=homeView();else if(route==='results')h=resultsView();
   else if(route==='c')h=profileView(byId(routeId));else if(route==='book')h=bookView(byId(routeId));
   $('#app').innerHTML=`<a class="skip" href="#main" data-a="skip">Ga naar de inhoud</a>`+h+(route==='results'&&!(mob()&&S.mapOpen)?protoBar():'');
-  scrollTo(0,y);centerStrips();stickH();updFnext();
+  scrollTo(0,y);centerStrips();stickH();updFnext();if(hadMain)focusMain();
   const st=$('#stick');if(st)st.querySelector('.sbin').inert=S.hide;
   if(route==='results'&&mob()&&S.mapOpen){document.body.style.overflow='hidden';scrollCar(true)}
 }
 function updFnext(){const sc=$('#fscroll'),b=$('.fnext');if(!sc||!b)return;b.hidden=!(sc.scrollWidth>sc.clientWidth+sc.scrollLeft+6)}
 function stickH(){const st=$('#stick');if(st)document.documentElement.style.setProperty('--sticky-h',(st.offsetHeight+8)+'px')}
-function go(r,id){route=r;routeId=id||null;S.menu=null;renderMenu();try{history.replaceState(null,'',`#/${r}${id?'/'+id:''}`)}catch(_){}render();scrollTo(0,0)}
+const TITLES={home:'Helena zoeken',results:'Zoekresultaten - Helena zoeken',book:'Afspraak maken - Helena zoeken'};
+function setTitle(){document.title=route==='c'&&byId(routeId)?`${byId(routeId).n} - Helena zoeken`:(TITLES[route]||TITLES.home)}
+function focusMain(){const m=$('#main');if(m){m.setAttribute('tabindex','-1');m.focus({preventScroll:true})}}
+function go(r,id){const pr=route,pi=routeId;route=r;routeId=id||null;S.menu=null;renderMenu();
+  try{const url=`#/${r}${id?'/'+id:''}`;history.replaceState({...(history.state||{}),y:scrollY},'');if(pr===r&&pi===routeId)history.replaceState({y:0},'',url);else history.pushState({y:0},'',url)}catch(_){}
+  render();scrollTo(0,0);setTitle();focusMain()}
+addEventListener('popstate',e=>{const m=location.hash.match(/^#\/(\w+)(?:\/(\w+))?/);if(!m)return;closeOv();closeSug();closeLayer();S.mapOpen=false;S.menu=null;renderMenu();route=m[1];routeId=m[2]||null;if(route==='book')S.bk.id=routeId;render();scrollTo(0,e.state?.y||0);setTitle();focusMain()});
 function toast(t){const e=document.createElement('div');e.className='toast';e.setAttribute('role','status');e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
 function startBook(id,ai,o,t,step){const b=S.bk;Object.assign(b,{id,ai,err:null,type:S.at[id]||0,day:o??null,time:t??null,step});go('book',id)}
-function scrollCar(instant){const car=$('#car');if(!car)return;const i=[...car.children].findIndex(x=>x.dataset.id===S.hl);if(i>=0)car.scrollTo({left:car.children[i].offsetLeft-(car.clientWidth-car.children[i].offsetWidth)/2,behavior:instant?'auto':'smooth'})}
+function scrollCar(instant){const car=$('#car');if(!car)return;const i=[...car.children].findIndex(x=>x.dataset.id===S.hl);if(i>=0)car.scrollTo({left:car.children[i].offsetLeft-(car.clientWidth-car.children[i].offsetWidth)/2,behavior:instant?'auto':SM()})}
 function setHl(id){S.hl=id;document.querySelectorAll('[data-pin]').forEach(p=>p.classList.toggle('on',p.dataset.pin===id));const list=results(),i=list.findIndex(c=>c.id===id);const cp=$('#cpos');if(cp&&i>=0)cp.textContent=`${i+1} van ${list.length}`;document.querySelectorAll('.cdots i').forEach((d,k)=>d.classList.toggle('on',k===i))}
 
 /* ---------- events ---------- */
@@ -739,7 +748,8 @@ document.addEventListener('click',e=>{
   if(mob()){const f=e.target.closest('[data-field]');if(f&&!e.target.closest('button')){openOv(f.dataset.field);return}}
   const t=e.target.closest('[data-a]');if(!t)return;
   const [a,...p]=t.dataset.a.split(':');
-  if(t.tagName==='A'&&t.getAttribute('href')==='#')e.preventDefault();
+  if(t.tagName==='A'&&(e.ctrlKey||e.metaKey||e.shiftKey))return;
+  if(t.tagName==='A'&&(t.getAttribute('href')||'').startsWith('#'))e.preventDefault();
   switch(a){
    case'fscroll':$('#fscroll')?.scrollBy({left:220,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});break;
    case'skip':e.preventDefault();{const m=$('#main');m?.setAttribute('tabindex','-1');m?.focus()}break;
@@ -760,7 +770,7 @@ document.addEventListener('click',e=>{
    case'ovrad':radSheet(t);break;
    case'ovclose':closeOv();break;
    case'ovgo':{const d=$('#ovl')?.value.trim();if(d&&d!==S.loc)setLoc(d);launch();break}
-   case'menu':{const r=t.getBoundingClientRect();if(S.menu?.k===p[0]){S.menu=null}else S.menu={k:p[0],x:r.left,y:r.bottom+6,t:t.textContent.trim()};renderMenu();render();break}
+   case'menu':{const r=t.getBoundingClientRect();if(S.menu?.k===p[0]){S.menu=null}else S.menu={k:p[0],x:r.left,y:r.bottom+6,t:t.textContent.trim()};renderMenu();render();if(S.menu)$('#mlayer .menu input,#mlayer .menu button')?.focus();else $(`[data-a="menu:${p[0]}"]`)?.focus();break}
    case'fmodal':fmodal(t);break;
    case'lclose':closeLayer();break;
    case'clearf':S.f={avail:'any',range:null,langs:[],svc:[],pay:[],np:false};if($('#layer .modal')&&!$('.cal'))fmodal(lastFocus);S.menu=null;renderMenu();render();break;
@@ -776,8 +786,8 @@ document.addEventListener('click',e=>{
    case'mapfull':S.mapOpen=true;render();break;
    case'mapclose':S.mapOpen=false;document.body.style.overflow='';render();break;
    case'mapfor':{if(mob()){S.hl=p[0];S.mapOpen=true}else{S.view='split';S.hl=p[0]}render();break}
-   case'pin':setHl(p[0]);if(mob())scrollCar();else document.getElementById('c-'+p[0])?.scrollIntoView({behavior:'smooth',block:'center'});document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hl',c.id==='c-'+p[0]));break;
-   case'cnav':{const car=$('#car');car.scrollBy({left:+p[0]*(car.children[0].offsetWidth+10),behavior:'smooth'});break}
+   case'pin':setHl(p[0]);if(mob())scrollCar();else document.getElementById('c-'+p[0])?.scrollIntoView({behavior:SM(),block:'center'});document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hl',c.id==='c-'+p[0]));break;
+   case'cnav':{const car=$('#car');car.scrollBy({left:+p[0]*(car.children[0].offsetWidth+10),behavior:SM()});break}
    case'save':{const id=p[0];S.saved.has(id)?S.saved.delete(id):S.saved.add(id);toast(S.saved.has(id)?'Zorgverlener bewaard':'Bewaarde zorgverlener verwijderd');if(route==='c')render();else{refreshCard(id,`[data-a="save:${id}"]`);document.querySelectorAll('.bdg').forEach(b=>{if(b.closest('.ibadge'))b.textContent=S.saved.size})}break}
    case'about':S.exp.has(p[0])?S.exp.delete(p[0]):S.exp.add(p[0]);refreshCard(p[0],`[data-a="about:${p[0]}"]`);break;
    case'atab':S.atab[p[0]]=+p[1];refreshCard(p[0],`[data-a="atab:${p[0]}:${p[1]}"]`);break;
@@ -814,6 +824,7 @@ document.addEventListener('input',e=>{
   else if(t.dataset.ov==='q'){S.q=t.value;OV.active='q';$('#ovbody').innerHTML=sugHTML('q',t.value)}
   else if(t.dataset.ov==='loc'){OV.draft=t.value;OV.active='loc';$('#ovbody').innerHTML=sugHTML('loc',t.value)}
   else if(t.id==='rad'){S.radius=RADII[+t.value];t.setAttribute('aria-valuetext',S.radius+' km');document.querySelectorAll('#radv').forEach(x=>x.textContent=S.radius+' km');document.querySelectorAll('.km').forEach(x=>x.textContent=S.radius+' km')}
+  if(t.dataset.fi||t.dataset.ov)setTimeout(()=>{const b=$('#sug')||$('#ovbody'),n=b?b.querySelectorAll('button').length:0;$('#sugst').textContent=n?`${n} suggesties beschikbaar`:'Geen suggesties'},0);
   if(t.dataset.bind){S.bk[t.dataset.bind]=t.value}
 });
 document.addEventListener('focusin',e=>{if(e.target.dataset?.ov){OV.active=e.target.dataset.ov;document.querySelectorAll('.ovf').forEach((f,i)=>f.classList.toggle('on',(i===0)===(OV.active==='q')));const b=$('#ovbody');if(b&&!(S.radOpen&&OV.active==='loc'))b.innerHTML=sugHTML(OV.active,OV.active==='q'?S.q:OV.draft)}});
@@ -822,7 +833,7 @@ document.addEventListener('change',e=>{
   if(t.hasAttribute('data-cv')){S.cv=t.value;render();$('#cv')?.focus();return}
   if(t.hasAttribute('data-pcv')){S.pc=t.value;render();$('#pcv')?.focus();return}
   if(t.id==='rad'){if(route==='results')render();return}
-  const inLayer=!!t.closest('#layer'),after=()=>{render();renderMenu();const fc=$('#fcount');if(fc)fc.textContent=results().length};
+  const inLayer=!!t.closest('#layer'),after=()=>{const fi=[...document.querySelectorAll('#mlayer .menu input')].indexOf(document.activeElement);render();renderMenu();if(fi>=0)document.querySelectorAll('#mlayer .menu input')[fi]?.focus();const fc=$('#fcount');if(fc)fc.textContent=results().length};
   if(t.dataset.f){const g=t.dataset.f,a=S.f[g];t.checked?a.push(t.value):a.splice(a.indexOf(t.value),1);after()}
   else if(t.dataset.r==='avail'){S.f.avail=t.value;S.f.range=null;after()}
   else if(t.hasAttribute('data-np')){S.f.np=t.checked;after()}
@@ -834,10 +845,11 @@ document.addEventListener('keydown',e=>{
     if($('.cal')){calClose();return}
     if($('#layer').innerHTML){closeLayer();return}
     if(S.radOpen){S.radOpen=false;OV.on?ovRender(false):render();return}
-    if(S.menu){S.menu=null;renderMenu();render();return}
+    if(S.menu){const mk=S.menu.k;S.menu=null;renderMenu();render();$(`[data-a="menu:${mk}"]`)?.focus();return}
     if($('#sug')){closeSug();return}
     if(OV.on){closeOv();return}
   }
+  if(mob()&&t.dataset?.fi&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openOv(t.dataset.fi);return}
   if(e.key==='Enter'&&t.dataset?.fi==='q'){e.preventDefault();closeSug();if(S.locOn)launch();else $('#loc')?.focus();return}
   if(e.key==='Enter'&&t.dataset?.fi==='loc'){e.preventDefault();const d=t.value.trim();if(d)setLoc(d);afterLoc();return}
   if(e.key==='Enter'&&t.dataset?.ov==='q'){e.preventDefault();if(S.locOn)launch();else{OV.active='loc';ovRender()}return}
@@ -847,20 +859,24 @@ document.addEventListener('keydown',e=>{
     if(t.dataset?.fi||t.dataset?.ov){if(e.key==='ArrowDown'&&items[0]){e.preventDefault();items[0].focus()}}
     else if(i>=0){e.preventDefault();const n=e.key==='ArrowDown'?i+1:i-1;(items[n]||(n<0?document.querySelector('[data-fi]:focus,#'+(OV.on?(OV.active==='q'?'ovq':'ovl'):'q')):items[i]))?.focus()}
   }
-  if(e.key==='Enter'&&t.classList?.contains('pin')){t.dispatchEvent(new MouseEvent('click',{bubbles:true}))}
-  if(e.key==='Tab'&&$('#layer .modal')){const f=[...$('#layer .modal').querySelectorAll('button:not([disabled]),input,a[href]')].filter(x=>x.offsetParent);if(f.length){const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}}
+  if((e.key==='Enter'||e.key===' ')&&t.classList?.contains('pin')){e.preventDefault();t.dispatchEvent(new MouseEvent('click',{bubbles:true}))}
+  if(e.key==='Tab'&&S.menu&&t.closest?.('.menu')){const fs=[...document.querySelectorAll('#mlayer .menu input,#mlayer .menu button')];if((!e.shiftKey&&t===fs[fs.length-1])||(e.shiftKey&&t===fs[0])){e.preventDefault();const mk=S.menu.k;S.menu=null;renderMenu();render();$(`[data-a="menu:${mk}"]`)?.focus();return}}
+  if(t.classList?.contains('dy')&&t.closest('.dys')&&['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const ds=[...t.closest('.dys').querySelectorAll('.dy')],i=ds.indexOf(t),n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:e.key==='Home'?0:ds.length-1,d=ds[Math.max(0,Math.min(ds.length-1,n))];d.focus();d.scrollIntoView({block:'nearest',inline:'nearest'});return}
+  const trapRoot=$('#layer .modal')||$('#ov');
+  if(e.key==='Tab'&&trapRoot){const f=[...trapRoot.querySelectorAll('button:not([disabled]),input,a[href]')].filter(x=>x.offsetParent);if(f.length){const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}}
 });
-let ly=0;
+let ly=0,KB=false;
+document.addEventListener('keydown',e=>{if(e.key==='Tab')KB=true},true);document.addEventListener('pointerdown',()=>{KB=false},true);
 addEventListener('scroll',()=>{
   const st=$('#stick');if(!st)return;const y=scrollY;
-  const busy=$('#sug')||S.radOpen||S.menu;
+  const busy=$('#sug')||S.radOpen||S.menu||KB||st.contains(document.activeElement);
   if(y>ly+6&&y>160&&!busy&&!S.hide){S.hide=true;st.classList.add('hide');st.querySelector('.sbin').inert=true;stickH()}
-  else if((y<ly-6||y<60)&&S.hide){S.hide=false;st.classList.remove('hide');st.querySelector('.sbin').inert=false;stickH()}
+  else if((y<ly-6||y<60||KB)&&S.hide){S.hide=false;st.classList.remove('hide');st.querySelector('.sbin').inert=false;stickH()}
   ly=y;if(S.menu){S.menu=null;renderMenu();render()}
 },{passive:true});
 addEventListener('resize',()=>{updFnext();const m=mob();if(m!==lastMob){lastMob=m;closeOv();closeSug();closeLayer();render()}else stickH()});
 document.addEventListener('scroll',e=>{if(e.target.id==='fscroll')updFnext();if(e.target.id==='car'){clearTimeout(window._ct);window._ct=setTimeout(()=>{const car=e.target,mid=car.scrollLeft+car.clientWidth/2;let best=null,bd=1e9;[...car.children].forEach(ch=>{const d=Math.abs(ch.offsetLeft+ch.offsetWidth/2-mid);if(d<bd){bd=d;best=ch}});if(best)setHl(best.dataset.id)},80)}},true);
-(function init(){const m=location.hash.match(/^#\/(\w+)(?:\/(\w+))?/);if(m){route=m[1];routeId=m[2]||null;if(route==='results'&&!S.spec){S.spec='huisarts'}if(route==='book'){S.bk.id=routeId;S.bk.step=1}}render()})();
+(function init(){const m=location.hash.match(/^#\/(\w+)(?:\/(\w+))?/);if(m){route=m[1];routeId=m[2]||null;if(route==='results'&&!S.spec){S.spec='huisarts'}if(route==='book'){S.bk.id=routeId;S.bk.step=1}}render();setTitle()})();
 </script>
 </body>
 </html>
